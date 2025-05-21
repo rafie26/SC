@@ -6,8 +6,12 @@ import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/home_guru/bindings/home_guru_binding.dart';
 import '../modules/home_guru/views/home_guru_view.dart';
+import '../modules/kelas/bindings/kelas_binding.dart';
+import '../modules/kelas/views/kelas_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
+import '../modules/navbar/bindings/navbar_binding.dart';
+import '../modules/navbar/views/navbar_view.dart';
 import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
@@ -49,6 +53,16 @@ class AppPages {
       name: Routes.TAMBAH_KELAS,
       page: () => const TambahKelasView(),
       binding: TambahKelasBinding(),
+    ),
+    GetPage(
+      name: Routes.KELAS,
+      page: () => const KelasView(),
+      binding: KelasBinding(),
+    ),
+    GetPage(
+      name: _Paths.NAVBAR,
+      page: () => const NavbarView(),
+      binding: NavbarBinding(),
     ),
   ];
 }
