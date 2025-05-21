@@ -8,6 +8,7 @@ abstract class Routes {
   static const LOGIN = _Paths.LOGIN;
   static const HOME_GURU = _Paths.HOME_GURU;
   static const TAMBAH_KELAS = _Paths.TAMBAH_KELAS;
+  static const KELAS = _Paths.KELAS;
 }
 
 abstract class _Paths {
@@ -18,4 +19,5 @@ abstract class _Paths {
   static const LOGIN = '/login';
   static const HOME_GURU = '/home-guru';
   static const TAMBAH_KELAS = '/tambah-kelas';
+  static const KELAS = '/kelas';
 }

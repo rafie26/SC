@@ -61,7 +61,7 @@ class HomeGuruView extends GetView<HomeGuruController> {
                     ),
                   ),
                   
-                  // List of class items
+                  // List of class items with navigable container
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0),
                     child: ListView(
@@ -69,13 +69,13 @@ class HomeGuruView extends GetView<HomeGuruController> {
                       physics: const NeverScrollableScrollPhysics(),
                       padding: EdgeInsets.zero,
                       children: [
-                        // Class item using dedicated widget
-                        ClassListItem(
+                        // Modified Class item with complete container
+                        NavigableClassItem(
                           iconAsset: 'assets/icons/bumi.png',
                           className: 'X RPL B',
                           onTap: () {
-                            // Add your navigation or action here
-                            print('X RPL B class tapped');
+                            // Navigate to Kelas page
+                            Get.toNamed('/kelas');
                           },
                         ),
                         // Add more class items as needed
@@ -173,13 +173,13 @@ class CustomAppBar extends StatelessWidget {
   }
 }
 
-// Class List Item Widget
-class ClassListItem extends StatelessWidget {
+// Class List Item Widget - Modified to be fully tappable
+class NavigableClassItem extends StatelessWidget {
   final String iconAsset;
   final String className;
   final VoidCallback onTap;
 
-  const ClassListItem({
+  const NavigableClassItem({
     Key? key,
     required this.iconAsset,
     required this.className,
