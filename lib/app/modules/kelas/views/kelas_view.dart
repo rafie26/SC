@@ -3,11 +3,22 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../controllers/kelas_controller.dart';
 
+// Import NavbarController directly from its path
+// Adjust this path to match your actual project structure
+import '../../navbar/controllers/navbar_controller.dart';
+
 class KelasView extends GetView<KelasController> {
   const KelasView({super.key});
   
   @override
   Widget build(BuildContext context) {
+    // Make sure NavbarController is initialized
+    if (!Get.isRegistered<NavbarController>()) {
+      Get.put(NavbarController());
+    }
+    // Get the NavbarController
+    final NavbarController navbarController = Get.find<NavbarController>();
+    
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -164,6 +175,92 @@ class KelasView extends GetView<KelasController> {
               ),
             ),
           ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.3),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: const Offset(0, -1),
+            ),
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildNavItem(navbarController, 0, 'Ruang Kelas', Icons.people, Colors.purple),
+              _buildNavItem(navbarController, 1, 'Cerita', Icons.image, Colors.black),
+              _buildAddButton(navbarController),
+              _buildNavItem(navbarController, 3, 'Obrolan', Icons.chat_bubble_outline, Colors.black),
+              _buildNavItem(navbarController, 4, 'Notifikasi', Icons.notifications_none, Colors.black),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavItem(NavbarController controller, int index, String label, IconData icon, Color defaultColor) {
+    return Obx(() {
+      final isSelected = controller.selectedIndex.value == index;
+      final color = isSelected ? Colors.purple : defaultColor;
+      
+      return InkWell(
+        onTap: () {
+          controller.changeIndex(index);
+          // Handle navigation based on index
+          if (index != 0) { // If not current page
+            // Handle page navigation based on index
+            // This will depend on your app's navigation structure
+          }
+        },
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              color: color,
+              size: 24,
+            ),
+            const SizedBox(height: 2),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 12,
+                color: color,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              ),
+            ),
+          ],
+        ),
+      );
+    });
+  }
+
+  Widget _buildAddButton(NavbarController controller) {
+    return InkWell(
+      onTap: () {
+        controller.changeIndex(2);
+        // Navigate to add page
+        // Add navigation logic here
+      },
+      child: Container(
+        width: 48,
+        height: 48,
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.purple,
+        ),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+          size: 28,
         ),
       ),
     );

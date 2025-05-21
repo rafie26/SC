@@ -10,6 +10,8 @@ import '../modules/kelas/bindings/kelas_binding.dart';
 import '../modules/kelas/views/kelas_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
+import '../modules/navbar/bindings/navbar_binding.dart';
+import '../modules/navbar/views/navbar_view.dart';
 import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
@@ -56,6 +58,11 @@ class AppPages {
       name: Routes.KELAS,
       page: () => const KelasView(),
       binding: KelasBinding(),
+    ),
+    GetPage(
+      name: Routes.NAVBAR,
+      page: () => const NavbarView(),
+      binding: NavbarBinding(),
     ),
   ];
 }

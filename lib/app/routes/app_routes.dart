@@ -9,6 +9,7 @@ abstract class Routes {
   static const HOME_GURU = _Paths.HOME_GURU;
   static const TAMBAH_KELAS = _Paths.TAMBAH_KELAS;
   static const KELAS = _Paths.KELAS;
+  static const NAVBAR = _Paths.NAVBAR;
 }
 
 abstract class _Paths {
@@ -20,4 +21,5 @@ abstract class _Paths {
   static const HOME_GURU = '/home-guru';
   static const TAMBAH_KELAS = '/tambah-kelas';
   static const KELAS = '/kelas';
+  static const NAVBAR = '/navbar';
 }
