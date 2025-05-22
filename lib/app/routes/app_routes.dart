@@ -16,6 +16,8 @@ abstract class Routes {
   static const TUGAS = _Paths.TUGAS;
   static const MATERI = _Paths.MATERI;
   static const KALENDER = _Paths.KALENDER;
+  static const PROFIL = _Paths.PROFIL;
+  static const SETTINGS = _Paths.SETTINGS;
 }
 
 abstract class _Paths {
@@ -34,4 +36,6 @@ abstract class _Paths {
   static const TUGAS = '/tugas';
   static const MATERI = '/materi';
   static const KALENDER = '/kalender';
+  static const PROFIL = '/profil';
+  static const SETTINGS = '/settings';
 }

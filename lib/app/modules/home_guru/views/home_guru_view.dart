@@ -175,7 +175,227 @@ class HomeGuruView extends GetView<HomeGuruController> {
             }
             return const SizedBox.shrink();
           }),
+
+          // Profile Sidebar Overlay - Half screen sidebar
+          Obx(() {
+            if (controller.isProfileSidebarOpen.value) {
+              return Container(
+                color: Colors.black.withOpacity(0.3),
+                child: Row(
+                  children: [
+                    // Sidebar Container - Takes half of the screen
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.75, // 75% of screen width
+                      height: double.infinity,
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 10,
+                            spreadRadius: 2,
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          // Profile Header Section
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.only(
+                              top: 60, // Account for status bar
+                              left: 24,
+                              right: 24,
+                              bottom: 30,
+                            ),
+                            decoration: const BoxDecoration(
+                              color: Color(0xFF6C1FB4),
+                            ),
+                            child: Column(
+                              children: [
+                                // Close button
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Profil',
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: controller.closeProfileSidebar,
+                                      child: const Icon(
+                                        Icons.close,
+                                        color: Colors.white,
+                                        size: 28,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 30),
+                                // Profile picture
+                                Container(
+                                  width: 80,
+                                  height: 80,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: Colors.white,
+                                      width: 4,
+                                    ),
+                                  ),
+                                  child: ClipOval(
+                                    child: Image.asset(
+                                      'assets/Rafi.jpg',
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return const Icon(Icons.person, size: 40, color: Color(0xFF6C1FB4));
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                // Name and role
+                                Text(
+                                  'Rafi Guru',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const SizedBox(height: 6),
+                                Text(
+                                  'Teacher',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.white.withOpacity(0.9),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          
+                          // Menu Items Section
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              child: Column(
+                                children: [
+                                  ProfileMenuItemWidget(
+                                    icon: Icons.person_outline,
+                                    title: 'Profil Saya',
+                                    onTap: controller.navigateToProfile,
+                                  ),
+                                  ProfileMenuItemWidget(
+                                    icon: Icons.settings_outlined,
+                                    title: 'Pengaturan',
+                                    onTap: controller.navigateToSettings,
+                                  ),
+                                  const SizedBox(height: 20),
+                                  // Divider
+                                  Container(
+                                    height: 1,
+                                    margin: const EdgeInsets.symmetric(horizontal: 24),
+                                    color: Colors.grey[300],
+                                  ),
+                                  const SizedBox(height: 20),
+                                  ProfileMenuItemWidget(
+                                    icon: Icons.logout_outlined,
+                                    title: 'Logout',
+                                    onTap: controller.logout,
+                                    isDestructive: true,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Right side - Tappable area to close sidebar
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: controller.closeProfileSidebar,
+                        child: Container(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+            return const SizedBox.shrink();
+          }),
         ],
+      ),
+    );
+  }
+}
+
+// Profile Menu Item Widget - Updated for full-screen sidebar
+class ProfileMenuItemWidget extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final VoidCallback onTap;
+  final bool isDestructive;
+
+  const ProfileMenuItemWidget({
+    Key? key,
+    required this.icon,
+    required this.title,
+    required this.onTap,
+    this.isDestructive = false,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+        child: Row(
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: isDestructive 
+                    ? Colors.red.withOpacity(0.1) 
+                    : const Color(0xFF6C1FB4).withOpacity(0.1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(
+                icon,
+                size: 22,
+                color: isDestructive ? Colors.red : const Color(0xFF6C1FB4),
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                title,
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: isDestructive ? Colors.red : Colors.black87,
+                ),
+              ),
+            ),
+            Icon(
+              Icons.arrow_forward_ios_rounded,
+              size: 16,
+              color: isDestructive ? Colors.red : Colors.grey[400],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -256,8 +476,11 @@ class CustomAppBar extends StatelessWidget {
         child: Row(
           children: [
             const SizedBox(width: 20),
-            // Profile picture - now circular
-            _buildProfilePic(controller),
+            // Profile picture - now tappable for sidebar
+            GestureDetector(
+              onTap: controller.toggleProfileSidebar, // Added tap functionality
+              child: _buildProfilePic(controller),
+            ),
             const SizedBox(width: 15),
             // Comments icon
             Image.asset(

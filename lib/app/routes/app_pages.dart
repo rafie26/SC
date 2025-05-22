@@ -22,8 +22,12 @@ import '../modules/notifikasi/bindings/notifikasi_binding.dart';
 import '../modules/notifikasi/views/notifikasi_view.dart';
 import '../modules/obrolan/bindings/obrolan_binding.dart';
 import '../modules/obrolan/views/obrolan_view.dart';
+import '../modules/profil/bindings/profil_binding.dart';
+import '../modules/profil/views/profil_view.dart';
 import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
+import '../modules/settings/bindings/settings_binding.dart';
+import '../modules/settings/views/settings_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
 import '../modules/tugas/bindings/tugas_binding.dart';
@@ -105,6 +109,16 @@ class AppPages {
       name: Routes.KALENDER,
       page: () => const KalenderView(),
       binding: KalenderBinding(),
+    ),
+    GetPage(
+      name: Routes.PROFIL,
+      page: () => const ProfilView(),
+      binding: ProfilBinding(),
+    ),
+    GetPage(
+      name: Routes.SETTINGS,
+      page: () => const SettingsView(),
+      binding: SettingsBinding(),
     ),
   ];
 }

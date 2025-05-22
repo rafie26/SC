@@ -6,6 +6,7 @@ class HomeGuruController extends GetxController {
   var isLoading = false.obs;
   var profileImage = ''.obs;
   var isMenuOpen = false.obs;
+  var isProfileSidebarOpen = false.obs; // New variable for profile sidebar
   
   @override
   void onInit() {
@@ -43,11 +44,64 @@ class HomeGuruController extends GetxController {
   // Toggle menu burger
   void toggleMenu() {
     isMenuOpen.value = !isMenuOpen.value;
+    // Close profile sidebar if open
+    if (isProfileSidebarOpen.value) {
+      isProfileSidebarOpen.value = false;
+    }
   }
   
   // Close menu
   void closeMenu() {
     isMenuOpen.value = false;
+  }
+  
+  // Toggle profile sidebar - New method
+  void toggleProfileSidebar() {
+    isProfileSidebarOpen.value = !isProfileSidebarOpen.value;
+    // Close menu if open
+    if (isMenuOpen.value) {
+      isMenuOpen.value = false;
+    }
+  }
+  
+  // Close profile sidebar - New method
+  void closeProfileSidebar() {
+    isProfileSidebarOpen.value = false;
+  }
+  
+  // Profile sidebar action methods - New methods
+  void navigateToProfile() {
+    closeProfileSidebar();
+    Get.toNamed('/profil');
+  }
+  
+  void navigateToSettings() {
+    closeProfileSidebar();
+    Get.toNamed('/settings');
+  }
+  
+  void logout() {
+    closeProfileSidebar();
+    Get.dialog(
+      AlertDialog(
+        title: const Text('Konfirmasi Logout'),
+        content: const Text('Apakah Anda yakin ingin keluar?'),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child: const Text('Batal'),
+          ),
+          TextButton(
+            onPressed: () {
+              Get.back();
+              // Add your logout logic here
+              Get.offAllNamed('/login'); // Navigate to login page
+            },
+            child: const Text('Logout', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
   }
   
   // Menu action methods
