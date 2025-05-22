@@ -10,6 +10,9 @@ abstract class Routes {
   static const TAMBAH_KELAS = _Paths.TAMBAH_KELAS;
   static const KELAS = _Paths.KELAS;
   static const NAVBAR = _Paths.NAVBAR;
+  static const CERITA = _Paths.CERITA;
+  static const OBROLAN = _Paths.OBROLAN;
+  static const NOTIFIKASI = _Paths.NOTIFIKASI;
 }
 
 abstract class _Paths {
@@ -22,4 +25,7 @@ abstract class _Paths {
   static const TAMBAH_KELAS = '/tambah-kelas';
   static const KELAS = '/kelas';
   static const NAVBAR = '/navbar';
+  static const CERITA = '/cerita';
+  static const OBROLAN = '/obrolan';
+  static const NOTIFIKASI = '/notifikasi';
 }

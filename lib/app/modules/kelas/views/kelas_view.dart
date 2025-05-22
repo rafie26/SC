@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../controllers/kelas_controller.dart';
-
-// Import NavbarController directly from its path
-// Adjust this path to match your actual project structure
 import '../../navbar/controllers/navbar_controller.dart';
 
 class KelasView extends GetView<KelasController> {
@@ -20,84 +17,77 @@ class KelasView extends GetView<KelasController> {
     final NavbarController navbarController = Get.find<NavbarController>();
     
     return Scaffold(
+      backgroundColor: Colors.white, // Set background color to white
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
         automaticallyImplyLeading: false, // Disable default back button
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // Back button
-            IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.black),
-              onPressed: () => Get.back(),
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(),
-            ),
-            
-            // Class name text
-            Text(
-              'X RPL B',
-              style: GoogleFonts.poppins(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-            
-            // Menu button
-            IconButton(
-              icon: const Icon(Icons.menu, color: Colors.black),
-              onPressed: () {
-                // Add your menu logic here
-                controller.openMenu();
-              },
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(),
-            ),
-          ],
+        title: Text(
+          'X RPL B',
+          style: GoogleFonts.poppins(
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
         ),
         centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Get.toNamed('/home-guru'), // Changed to navigate to /home_guru
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.menu, color: Colors.black),
+            onPressed: () {
+              // Add your menu logic here
+              controller.openMenu();
+            },
+          ),
+        ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 16.0,
-                  mainAxisSpacing: 20.0,
-                  childAspectRatio: 0.7,
-                ),
-                itemCount: 15, // 3 horizontal x 5 vertical
-                itemBuilder: (context, index) {
-                  // Dummy data for student names and details
-                  final students = [
-                    {'name': 'Ahmad Rizki', 'nim': '0001', 'status': 'Hadir'},
-                    {'name': 'Budi Santoso', 'nim': '0002', 'status': 'Hadir'},
-                    {'name': 'Cindy Permata', 'nim': '0003', 'status': 'Izin'},
-                    {'name': 'Deni Kurniawan', 'nim': '0004', 'status': 'Hadir'},
-                    {'name': 'Eva Sari', 'nim': '0005', 'status': 'Hadir'},
-                    {'name': 'Faisal Rahman', 'nim': '0006', 'status': 'Alpha'},
-                    {'name': 'Gita Puspita', 'nim': '0007', 'status': 'Hadir'},
-                    {'name': 'Hadi Wijaya', 'nim': '0008', 'status': 'Hadir'},
-                    {'name': 'Indah Pertiwi', 'nim': '0009', 'status': 'Hadir'},
-                    {'name': 'Joko Susilo', 'nim': '0010', 'status': 'Izin'},
-                    {'name': 'Kartika Dewi', 'nim': '0011', 'status': 'Hadir'},
-                    {'name': 'Lukman Hakim', 'nim': '0012', 'status': 'Hadir'},
-                    {'name': 'Melly Goeslaw', 'nim': '0013', 'status': 'Alpha'},
-                    {'name': 'Nugroho Adi', 'nim': '0014', 'status': 'Hadir'},
-                    {'name': 'Olivia Putri', 'nim': '0015', 'status': 'Hadir'},
-                  ];
-                  
-                  final student = students[index];
-                  final Color statusColor = getStatusColor(student['status']!);
-                  final String avatarText = student['name']!.substring(0, 1);
-                  
-                  return Card(
+      // Remove the padding around the body content
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: GridView.builder(
+              padding: const EdgeInsets.all(16.0), // Add padding directly to GridView instead
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 16.0,
+                mainAxisSpacing: 20.0,
+                childAspectRatio: 0.8, // Adjusted ratio since we removed status
+              ),
+              itemCount: 15, // 3 horizontal x 5 vertical
+              itemBuilder: (context, index) {
+                // Dummy data for student names and details
+                final students = [
+                  {'name': 'Ahmad Rizki', 'nis': '0001', 'kelas': 'X RPL B'},
+                  {'name': 'Budi Santoso', 'nis': '0002', 'kelas': 'X RPL B'},
+                  {'name': 'Cindy Permata', 'nis': '0003', 'kelas': 'X RPL B'},
+                  {'name': 'Deni Kurniawan', 'nis': '0004', 'kelas': 'X RPL B'},
+                  {'name': 'Eva Sari', 'nis': '0005', 'kelas': 'X RPL B'},
+                  {'name': 'Faisal Rahman', 'nis': '0006', 'kelas': 'X RPL B'},
+                  {'name': 'Gita Puspita', 'nis': '0007', 'kelas': 'X RPL B'},
+                  {'name': 'Hadi Wijaya', 'nis': '0008', 'kelas': 'X RPL B'},
+                  {'name': 'Indah Pertiwi', 'nis': '0009', 'kelas': 'X RPL B'},
+                  {'name': 'Joko Susilo', 'nis': '0010', 'kelas': 'X RPL B'},
+                  {'name': 'Kartika Dewi', 'nis': '0011', 'kelas': 'X RPL B'},
+                  {'name': 'Lukman Hakim', 'nis': '0012', 'kelas': 'X RPL B'},
+                  {'name': 'Melly Goeslaw', 'nis': '0013', 'kelas': 'X RPL B'},
+                  {'name': 'Nugroho Adi', 'nis': '0014', 'kelas': 'X RPL B'},
+                  {'name': 'Olivia Putri', 'nis': '0015', 'kelas': 'X RPL B'},
+                ];
+                
+                final student = students[index];
+                final String avatarText = student['name']!.substring(0, 1);
+                
+                return InkWell(
+                  onTap: () {
+                    // Show student detail dialog when card is tapped
+                    controller.showStudentDetail(student);
+                  },
+                  child: Card(
                     elevation: 2,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
@@ -139,68 +129,52 @@ class KelasView extends GetView<KelasController> {
                             overflow: TextOverflow.ellipsis,
                           ),
                           const SizedBox(height: 4),
-                          // Student ID
+                          // Student ID - Changed NIM to NIS
                           Text(
-                            'NIM: ${student['nim']}',
+                            'NIS: ${student['nis']}',
                             style: GoogleFonts.poppins(
                               fontSize: 12,
                               color: Colors.grey[600],
                             ),
                           ),
-                          const SizedBox(height: 8),
-                          // Status indicator
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 2,
-                            ),
-                            decoration: BoxDecoration(
-                              color: statusColor.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Text(
-                              student['status']!,
-                              style: GoogleFonts.poppins(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w500,
-                                color: statusColor,
-                              ),
-                            ),
-                          ),
                         ],
                       ),
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
-              spreadRadius: 1,
-              blurRadius: 5,
-              offset: const Offset(0, -1),
-            ),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildNavItem(navbarController, 0, 'Ruang Kelas', Icons.people, Colors.purple),
-              _buildNavItem(navbarController, 1, 'Cerita', Icons.image, Colors.black),
-              _buildAddButton(navbarController),
-              _buildNavItem(navbarController, 3, 'Obrolan', Icons.chat_bubble_outline, Colors.black),
-              _buildNavItem(navbarController, 4, 'Notifikasi', Icons.notifications_none, Colors.black),
-            ],
           ),
+        ],
+      ),
+      bottomNavigationBar: _buildBottomNavigationBar(navbarController),
+    );
+  }
+
+  Widget _buildBottomNavigationBar(NavbarController controller) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: const Offset(0, -1),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _buildNavItem(controller, 0, 'Ruang Kelas', Icons.people, Colors.purple),
+            _buildNavItem(controller, 1, 'Cerita', Icons.image, Colors.black),
+            _buildAddButton(controller),
+            _buildNavItem(controller, 3, 'Obrolan', Icons.chat_bubble_outline, Colors.black),
+            _buildNavItem(controller, 4, 'Notifikasi', Icons.notifications_none, Colors.black),
+          ],
         ),
       ),
     );
@@ -214,11 +188,6 @@ class KelasView extends GetView<KelasController> {
       return InkWell(
         onTap: () {
           controller.changeIndex(index);
-          // Handle navigation based on index
-          if (index != 0) { // If not current page
-            // Handle page navigation based on index
-            // This will depend on your app's navigation structure
-          }
         },
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -247,8 +216,6 @@ class KelasView extends GetView<KelasController> {
     return InkWell(
       onTap: () {
         controller.changeIndex(2);
-        // Navigate to add page
-        // Add navigation logic here
       },
       child: Container(
         width: 48,
@@ -264,19 +231,6 @@ class KelasView extends GetView<KelasController> {
         ),
       ),
     );
-  }
-  
-  Color getStatusColor(String status) {
-    switch (status) {
-      case 'Hadir':
-        return Colors.green;
-      case 'Izin':
-        return Colors.orange;
-      case 'Alpha':
-        return Colors.red;
-      default:
-        return Colors.grey;
-    }
   }
   
   Color getAvatarColor(int index) {

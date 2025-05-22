@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import '../modules/TambahKelas/bindings/tambah_kelas_binding.dart';
 import '../modules/TambahKelas/views/tambah_kelas_view.dart';
+import '../modules/cerita/bindings/cerita_binding.dart';
+import '../modules/cerita/views/cerita_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/home_guru/bindings/home_guru_binding.dart';
@@ -12,6 +14,10 @@ import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/navbar/bindings/navbar_binding.dart';
 import '../modules/navbar/views/navbar_view.dart';
+import '../modules/notifikasi/bindings/notifikasi_binding.dart';
+import '../modules/notifikasi/views/notifikasi_view.dart';
+import '../modules/obrolan/bindings/obrolan_binding.dart';
+import '../modules/obrolan/views/obrolan_view.dart';
 import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
@@ -63,6 +69,21 @@ class AppPages {
       name: Routes.NAVBAR,
       page: () => const NavbarView(),
       binding: NavbarBinding(),
+    ),
+    GetPage(
+      name: Routes.CERITA,
+      page: () => const CeritaView(),
+      binding: CeritaBinding(),
+    ),
+    GetPage(
+      name: Routes.OBROLAN,
+      page: () => const ObrolanView(),
+      binding: ObrolanBinding(),
+    ),
+    GetPage(
+      name: Routes.NOTIFIKASI,
+      page: () => const NotifikasiView(),
+      binding: NotifikasiBinding(),
     ),
   ];
 }
