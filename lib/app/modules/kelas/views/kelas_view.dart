@@ -17,131 +17,27 @@ class KelasView extends GetView<KelasController> {
     final NavbarController navbarController = Get.find<NavbarController>();
     
     return Scaffold(
-      backgroundColor: Colors.white, // Set background color to white
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        automaticallyImplyLeading: false, // Disable default back button
-        title: Text(
-          'X RPL B',
-          style: GoogleFonts.poppins(
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Get.toNamed('/home-guru'), // Changed to navigate to /home_guru
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.menu, color: Colors.black),
-            onPressed: () {
-              // Add your menu logic here
-              controller.openMenu();
-            },
-          ),
-        ],
-      ),
-      // Remove the padding around the body content
+      backgroundColor: Colors.white,
+      appBar: _buildAppBar(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Show management toolbar when in student management mode
+          Obx(() => controller.isManagingStudents.value 
+            ? _buildManagementToolbar() 
+            : const SizedBox.shrink()),
           Expanded(
             child: GridView.builder(
-              padding: const EdgeInsets.all(16.0), // Add padding directly to GridView instead
+              padding: const EdgeInsets.all(16.0),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 crossAxisSpacing: 16.0,
                 mainAxisSpacing: 20.0,
-                childAspectRatio: 0.8, // Adjusted ratio since we removed status
+                childAspectRatio: 0.85, // Adjusted for better consistency
               ),
-              itemCount: 15, // 3 horizontal x 5 vertical
+              itemCount: 15,
               itemBuilder: (context, index) {
-                // Dummy data for student names and details
-                final students = [
-                  {'name': 'Ahmad Rizki', 'nis': '0001', 'kelas': 'X RPL B'},
-                  {'name': 'Budi Santoso', 'nis': '0002', 'kelas': 'X RPL B'},
-                  {'name': 'Cindy Permata', 'nis': '0003', 'kelas': 'X RPL B'},
-                  {'name': 'Deni Kurniawan', 'nis': '0004', 'kelas': 'X RPL B'},
-                  {'name': 'Eva Sari', 'nis': '0005', 'kelas': 'X RPL B'},
-                  {'name': 'Faisal Rahman', 'nis': '0006', 'kelas': 'X RPL B'},
-                  {'name': 'Gita Puspita', 'nis': '0007', 'kelas': 'X RPL B'},
-                  {'name': 'Hadi Wijaya', 'nis': '0008', 'kelas': 'X RPL B'},
-                  {'name': 'Indah Pertiwi', 'nis': '0009', 'kelas': 'X RPL B'},
-                  {'name': 'Joko Susilo', 'nis': '0010', 'kelas': 'X RPL B'},
-                  {'name': 'Kartika Dewi', 'nis': '0011', 'kelas': 'X RPL B'},
-                  {'name': 'Lukman Hakim', 'nis': '0012', 'kelas': 'X RPL B'},
-                  {'name': 'Melly Goeslaw', 'nis': '0013', 'kelas': 'X RPL B'},
-                  {'name': 'Nugroho Adi', 'nis': '0014', 'kelas': 'X RPL B'},
-                  {'name': 'Olivia Putri', 'nis': '0015', 'kelas': 'X RPL B'},
-                ];
-                
-                final student = students[index];
-                final String avatarText = student['name']!.substring(0, 1);
-                
-                return InkWell(
-                  onTap: () {
-                    // Show student detail dialog when card is tapped
-                    controller.showStudentDetail(student);
-                  },
-                  child: Card(
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // Avatar circle with first letter
-                          Container(
-                            width: 45,
-                            height: 45,
-                            decoration: BoxDecoration(
-                              color: getAvatarColor(index),
-                              shape: BoxShape.circle,
-                            ),
-                            child: Center(
-                              child: Text(
-                                avatarText,
-                                style: GoogleFonts.poppins(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 6),
-                          // Student name
-                          Text(
-                            student['name']!,
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            textAlign: TextAlign.center,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: 4),
-                          // Student ID - Changed NIM to NIS
-                          Text(
-                            'NIS: ${student['nis']}',
-                            style: GoogleFonts.poppins(
-                              fontSize: 12,
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
+                return _buildStudentCard(index);
               },
             ),
           ),
@@ -149,6 +45,230 @@ class KelasView extends GetView<KelasController> {
       ),
       bottomNavigationBar: _buildBottomNavigationBar(navbarController),
     );
+  }
+
+  PreferredSizeWidget _buildAppBar() {
+    return AppBar(
+      backgroundColor: Colors.white,
+      elevation: 0,
+      automaticallyImplyLeading: false,
+      title: Obx(() => Text(
+        controller.isManagingStudents.value 
+          ? '${controller.selectedStudents.length} Dipilih'
+          : 'X RPL B',
+        style: GoogleFonts.poppins(
+          fontSize: 18.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+      )),
+      centerTitle: true,
+      leading: Obx(() => IconButton(
+        icon: Icon(
+          controller.isManagingStudents.value ? Icons.close : Icons.arrow_back, 
+          color: Colors.black
+        ),
+        onPressed: () {
+          if (controller.isManagingStudents.value) {
+            controller.toggleStudentManagement();
+          } else {
+            Get.toNamed('/home-guru');
+          }
+        },
+      )),
+      actions: [
+        Obx(() => controller.isManagingStudents.value
+          ? IconButton(
+              icon: const Icon(Icons.delete_outline, color: Colors.red),
+              onPressed: () => controller.deleteSelectedStudents(),
+            )
+          : IconButton(
+              icon: const Icon(Icons.menu, color: Colors.black),
+              onPressed: () => controller.openMenu(),
+            )
+        ),
+      ],
+    );
+  }
+
+  Widget _buildManagementToolbar() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      decoration: BoxDecoration(
+        color: Colors.purple.withOpacity(0.1),
+        border: Border(
+          bottom: BorderSide(color: Colors.purple.withOpacity(0.2)),
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            Icons.info_outline,
+            color: Colors.purple,
+            size: 20,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            'Pilih siswa yang ingin dikelola',
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              color: Colors.purple,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStudentCard(int index) {
+    // Dummy data for student names and details
+    final students = [
+      {'name': 'Ahmad Rizki', 'nis': '0001', 'kelas': 'X RPL B', 'noAbsen': '1'},
+      {'name': 'Budi Santoso', 'nis': '0002', 'kelas': 'X RPL B', 'noAbsen': '2'},
+      {'name': 'Cindy Permata', 'nis': '0003', 'kelas': 'X RPL B', 'noAbsen': '3'},
+      {'name': 'Deni Kurniawan', 'nis': '0004', 'kelas': 'X RPL B', 'noAbsen': '4'},
+      {'name': 'Eva Sari', 'nis': '0005', 'kelas': 'X RPL B', 'noAbsen': '5'},
+      {'name': 'Faisal Rahman', 'nis': '0006', 'kelas': 'X RPL B', 'noAbsen': '6'},
+      {'name': 'Gita Puspita', 'nis': '0007', 'kelas': 'X RPL B', 'noAbsen': '7'},
+      {'name': 'Hadi Wijaya', 'nis': '0008', 'kelas': 'X RPL B', 'noAbsen': '8'},
+      {'name': 'Indah Pertiwi', 'nis': '0009', 'kelas': 'X RPL B', 'noAbsen': '9'},
+      {'name': 'Joko Susilo', 'nis': '0010', 'kelas': 'X RPL B', 'noAbsen': '10'},
+      {'name': 'Kartika Dewi', 'nis': '0011', 'kelas': 'X RPL B', 'noAbsen': '11'},
+      {'name': 'Lukman Hakim', 'nis': '0012', 'kelas': 'X RPL B', 'noAbsen': '12'},
+      {'name': 'Melly Goeslaw', 'nis': '0013', 'kelas': 'X RPL B', 'noAbsen': '13'},
+      {'name': 'Nugroho Adi', 'nis': '0014', 'kelas': 'X RPL B', 'noAbsen': '14'},
+      {'name': 'Olivia Putri', 'nis': '0015', 'kelas': 'X RPL B', 'noAbsen': '15'},
+    ];
+    
+    final student = students[index];
+    final String avatarText = student['name']!.substring(0, 1);
+    
+    return Obx(() {
+      final isSelected = controller.selectedStudents.contains(index);
+      final isManaging = controller.isManagingStudents.value;
+      
+      return InkWell(
+        onTap: () {
+          if (isManaging) {
+            controller.toggleStudentSelection(index);
+          } else {
+            controller.showStudentDetail(student);
+          }
+        },
+        child: Stack(
+          children: [
+            Container(
+              // Fixed height and width for consistent card size
+              height: double.infinity,
+              width: double.infinity,
+              child: Card(
+                elevation: 2,
+                margin: EdgeInsets.zero, // Remove default margin
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  side: isSelected 
+                    ? const BorderSide(color: Colors.purple, width: 2)
+                    : BorderSide.none,
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: isSelected 
+                      ? Colors.purple.withOpacity(0.1) 
+                      : Colors.white,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0), // Consistent padding
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        // Avatar circle with first letter
+                        Container(
+                          width: 50, // Fixed size for consistency
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: isSelected 
+                              ? Colors.purple 
+                              : getAvatarColor(index),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: Text(
+                              avatarText,
+                              style: GoogleFonts.poppins(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8), // Consistent spacing
+                        // Student name with fixed height container
+                        Container(
+                          height: 32, // Fixed height for name area
+                          child: Center(
+                            child: Text(
+                              student['name']!,
+                              style: GoogleFonts.poppins(
+                                fontSize: 13, // Slightly smaller for consistency
+                                fontWeight: FontWeight.w600,
+                                color: isSelected ? Colors.purple : Colors.black,
+                              ),
+                              textAlign: TextAlign.center,
+                              maxLines: 2, // Allow 2 lines for longer names
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        // Student ID with fixed styling
+                        Text(
+                          'NIS: ${student['nis']}',
+                          style: GoogleFonts.poppins(
+                            fontSize: 11, // Consistent small size
+                            color: isSelected 
+                              ? Colors.purple.withOpacity(0.8)
+                              : Colors.grey[600],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            // Selection indicator
+            if (isManaging)
+              Positioned(
+                top: 8,
+                right: 8,
+                child: Container(
+                  width: 24,
+                  height: 24,
+                  decoration: BoxDecoration(
+                    color: isSelected ? Colors.purple : Colors.grey[300],
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: isSelected ? Colors.white : Colors.grey[400]!,
+                      width: 2,
+                    ),
+                  ),
+                  child: isSelected
+                    ? const Icon(
+                        Icons.check,
+                        color: Colors.white,
+                        size: 16,
+                      )
+                    : null,
+                ),
+              ),
+          ],
+        ),
+      );
+    });
   }
 
   Widget _buildBottomNavigationBar(NavbarController controller) {
