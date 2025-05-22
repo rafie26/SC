@@ -108,7 +108,28 @@ class LoginView extends GetView<LoginController> {
                       ),
                     ),
 
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 15),
+
+                    // Link Lupa Password
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {
+                          Get.toNamed('/forgot-password');
+                        },
+                        child: Text(
+                          'Lupa Password?',
+                          style: GoogleFonts.poppins(
+                            color: Colors.blue,
+                            fontSize: 14,
+                            decoration: TextDecoration.underline,
+                            decorationColor: Colors.blue,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 25),
 
                     // Tombol Login
                     Obx(() => ElevatedButton(

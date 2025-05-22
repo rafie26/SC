@@ -18,6 +18,7 @@ abstract class Routes {
   static const KALENDER = _Paths.KALENDER;
   static const PROFIL = _Paths.PROFIL;
   static const SETTINGS = _Paths.SETTINGS;
+  static const FORGOT_PASSWORD = _Paths.FORGOT_PASSWORD;
 }
 
 abstract class _Paths {
@@ -38,4 +39,5 @@ abstract class _Paths {
   static const KALENDER = '/kalender';
   static const PROFIL = '/profil';
   static const SETTINGS = '/settings';
+  static const FORGOT_PASSWORD = '/forgot-password';
 }

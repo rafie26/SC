@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../controllers/register_controller.dart';
@@ -66,6 +67,7 @@ class RegisterView extends GetView<RegisterController> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(height: circleDiameter / 2.7), // Jarak dari Register
+                    
                     // Username
                     Container(
                       decoration: BoxDecoration(
@@ -81,6 +83,31 @@ class RegisterView extends GetView<RegisterController> {
                           hintText: 'Username',
                           hintStyle: GoogleFonts.poppins(color: Colors.white.withOpacity(0.8)),
                           prefixIcon: const Icon(Icons.person_outline, color: Colors.white),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // Nomor Induk (NEW FIELD)
+                    Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF9816DF),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: TextField(
+                        controller: controller.nomorIndukController,
+                        style: GoogleFonts.poppins(color: Colors.white),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly, // Hanya angka
+                        ],
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(vertical: 20),
+                          border: InputBorder.none,
+                          hintText: 'Nomor Induk',
+                          hintStyle: GoogleFonts.poppins(color: Colors.white.withOpacity(0.8)),
+                          prefixIcon: const Icon(Icons.badge_outlined, color: Colors.white),
                         ),
                       ),
                     ),

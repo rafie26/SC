@@ -4,6 +4,8 @@ import '../modules/TambahKelas/bindings/tambah_kelas_binding.dart';
 import '../modules/TambahKelas/views/tambah_kelas_view.dart';
 import '../modules/cerita/bindings/cerita_binding.dart';
 import '../modules/cerita/views/cerita_view.dart';
+import '../modules/forgot_password/bindings/forgot_password_binding.dart';
+import '../modules/forgot_password/views/forgot_password_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/home_guru/bindings/home_guru_binding.dart';
@@ -119,6 +121,11 @@ class AppPages {
       name: Routes.SETTINGS,
       page: () => const SettingsView(),
       binding: SettingsBinding(),
+    ),
+    GetPage(
+      name: Routes.FORGOT_PASSWORD,
+      page: () => const ForgotPasswordView(),
+      binding: ForgotPasswordBinding(),
     ),
   ];
 }
