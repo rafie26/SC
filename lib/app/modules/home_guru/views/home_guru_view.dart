@@ -155,16 +155,6 @@ class HomeGuruView extends GetView<HomeGuruController> {
                                 onTap: controller.navigateToMateri,
                               ),
                               MenuItemWidget(
-                                icon: Icons.grade,
-                                title: 'Nilai',
-                                onTap: controller.navigateToNilai,
-                              ),
-                              MenuItemWidget(
-                                icon: Icons.checklist,
-                                title: 'Absensi',
-                                onTap: controller.navigateToAbsensi,
-                              ),
-                              MenuItemWidget(
                                 icon: Icons.calendar_today,
                                 title: 'Kalender',
                                 onTap: controller.navigateToKalender,

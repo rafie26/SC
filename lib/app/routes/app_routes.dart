@@ -13,6 +13,9 @@ abstract class Routes {
   static const CERITA = _Paths.CERITA;
   static const OBROLAN = _Paths.OBROLAN;
   static const NOTIFIKASI = _Paths.NOTIFIKASI;
+  static const TUGAS = _Paths.TUGAS;
+  static const MATERI = _Paths.MATERI;
+  static const KALENDER = _Paths.KALENDER;
 }
 
 abstract class _Paths {
@@ -28,4 +31,7 @@ abstract class _Paths {
   static const CERITA = '/cerita';
   static const OBROLAN = '/obrolan';
   static const NOTIFIKASI = '/notifikasi';
+  static const TUGAS = '/tugas';
+  static const MATERI = '/materi';
+  static const KALENDER = '/kalender';
 }

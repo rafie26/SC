@@ -8,10 +8,14 @@ import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/home_guru/bindings/home_guru_binding.dart';
 import '../modules/home_guru/views/home_guru_view.dart';
+import '../modules/kalender/bindings/kalender_binding.dart';
+import '../modules/kalender/views/kalender_view.dart';
 import '../modules/kelas/bindings/kelas_binding.dart';
 import '../modules/kelas/views/kelas_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
+import '../modules/materi/bindings/materi_binding.dart';
+import '../modules/materi/views/materi_view.dart';
 import '../modules/navbar/bindings/navbar_binding.dart';
 import '../modules/navbar/views/navbar_view.dart';
 import '../modules/notifikasi/bindings/notifikasi_binding.dart';
@@ -22,6 +26,8 @@ import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
+import '../modules/tugas/bindings/tugas_binding.dart';
+import '../modules/tugas/views/tugas_view.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -84,6 +90,21 @@ class AppPages {
       name: Routes.NOTIFIKASI,
       page: () => const NotifikasiView(),
       binding: NotifikasiBinding(),
+    ),
+    GetPage(
+      name: Routes.TUGAS,
+      page: () => const TugasView(),
+      binding: TugasBinding(),
+    ),
+    GetPage(
+      name: Routes.MATERI,
+      page: () => const MateriView(),
+      binding: MateriBinding(),
+    ),
+    GetPage(
+      name: Routes.KALENDER,
+      page: () => const KalenderView(),
+      binding: KalenderBinding(),
     ),
   ];
 }

@@ -60,16 +60,7 @@ class HomeGuruController extends GetxController {
     closeMenu();
     Get.toNamed('/materi');
   }
-  
-  void navigateToNilai() {
-    closeMenu();
-    Get.toNamed('/nilai');
-  }
-  
-  void navigateToAbsensi() {
-    closeMenu();
-    Get.toNamed('/absensi');
-  }
+
   
   void navigateToKalender() {
     closeMenu();
@@ -81,7 +72,7 @@ class HomeGuruController extends GetxController {
     Get.dialog(
       AlertDialog(
         title: const Text('Bantuan'),
-        content: const Text('Untuk bantuan lebih lanjut, silakan hubungi:\n\nEmail: support@aplikasiguru.com\nTelp: 0800-1234-5678'),
+        content: const Text('Untuk bantuan lebih lanjut, silakan hubungi:\n\nEmail: SevenConnect@gmail.com\nTelp: 0895-6119-99186'),
         actions: [
           TextButton(
             onPressed: () => Get.back(),
