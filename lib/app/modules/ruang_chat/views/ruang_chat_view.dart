@@ -56,7 +56,7 @@ class RuangChatView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Ahmad Rahman',
+                  'Ahmad Rizki',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -237,13 +237,15 @@ class RuangChatView extends StatelessWidget {
     RuangChatController controller,
   ) {
     return GestureDetector(
-      onLongPress: () => controller.handleMessageLongPress(message),
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 2),
-        child: Row(
-          mainAxisAlignment: isMyMessage 
-              ? MainAxisAlignment.end 
-              : MainAxisAlignment.start,
+  onLongPress: () => controller.handleMessageLongPress(message),
+  child: Container(
+    margin: const EdgeInsets.symmetric(vertical: 2),
+    padding: EdgeInsets.only(left: isMyMessage ? 0 : 24), // tambahkan padding kiri
+    child: Row(
+      mainAxisAlignment: isMyMessage 
+          ? MainAxisAlignment.end 
+          : MainAxisAlignment.start,
+
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             if (!isMyMessage) ...[
@@ -481,22 +483,24 @@ class RuangChatView extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      Expanded(
-                        child: TextField(
-                          controller: controller.messageController,
-                          decoration: const InputDecoration(
-                            hintText: 'Ketik pesan...',
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 12,
-                            ),
-                          ),
-                          maxLines: null,
-                          textCapitalization: TextCapitalization.sentences,
-                          onChanged: controller.updateMessage,
-                        ),
-                      ),
+                      Flexible(
+  child: TextField(
+    controller: controller.messageController,
+    decoration: const InputDecoration(
+      hintText: 'Ketik pesan...',
+      border: InputBorder.none,
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 12,
+      ),
+    ),
+    minLines: 1,
+    maxLines: 5, // Maksimal tinggi teks area (bisa diubah sesuai keinginan)
+    keyboardType: TextInputType.multiline,
+    textCapitalization: TextCapitalization.sentences,
+    onChanged: controller.updateMessage,
+  ),
+),
                       
                       // Emoji Button
                       IconButton(

@@ -28,7 +28,7 @@ class MateriView extends GetView<MateriController> {
         actions: [
           IconButton(
             icon: const Icon(Icons.add, color: Colors.white, size: 28),
-            onPressed: controller.navigateToAddMateri,
+            onPressed: () => Get.toNamed('/tambah-detail'),
           ),
         ],
       ),
@@ -72,7 +72,8 @@ class MateriView extends GetView<MateriController> {
                         materi: materi,
                         onTap: () {
                           controller.incrementViews(materi.id);
-                          controller.navigateToDetailMateri(materi.id);
+                          // Navigate to detail-materi route with materi ID as parameter
+                          Get.toNamed('/detail-materi', arguments: materi.id);
                         },
                         onEdit: () => controller.editMateri(materi.id),
                         onDelete: () => controller.deleteMateri(materi.id),

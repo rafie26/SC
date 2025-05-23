@@ -28,7 +28,7 @@ class KalenderView extends GetView<KalenderController> {
         actions: [
           IconButton(
             icon: const Icon(Icons.add, color: Colors.white, size: 28),
-            onPressed: () => controller.navigateToAddEvent(),
+            onPressed: () => Get.toNamed('/tambah-kalender'),
           ),
         ],
       ),

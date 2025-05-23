@@ -6,6 +6,8 @@ import '../modules/cerita/bindings/cerita_binding.dart';
 import '../modules/cerita/views/cerita_view.dart';
 import '../modules/chat/bindings/chat_binding.dart';
 import '../modules/chat/views/chat_view.dart';
+import '../modules/detail_materi/bindings/detail_materi_binding.dart';
+import '../modules/detail_materi/views/detail_materi_view.dart';
 import '../modules/forgot_password/bindings/forgot_password_binding.dart';
 import '../modules/forgot_password/views/forgot_password_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -36,6 +38,12 @@ import '../modules/settings/bindings/settings_binding.dart';
 import '../modules/settings/views/settings_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
+import '../modules/tambah_detail/bindings/tambah_detail_binding.dart';
+import '../modules/tambah_detail/views/tambah_detail_view.dart';
+import '../modules/tambah_kalender/bindings/tambah_kalender_binding.dart';
+import '../modules/tambah_kalender/views/tambah_kalender_view.dart';
+import '../modules/tambah_tugas/bindings/tambah_tugas_binding.dart';
+import '../modules/tambah_tugas/views/tambah_tugas_view.dart';
 import '../modules/tugas/bindings/tugas_binding.dart';
 import '../modules/tugas/views/tugas_view.dart';
 import '../modules/tugas_detail/bindings/tugas_detail_binding.dart';
@@ -147,6 +155,26 @@ class AppPages {
       name: Routes.TUGAS_DETAIL,
       page: () => const TugasDetailView(),
       binding: TugasDetailBinding(),
+    ),
+    GetPage(
+      name: Routes.TAMBAH_TUGAS,
+      page: () => const TambahTugasView(),
+      binding: TambahTugasBinding(),
+    ),
+    GetPage(
+      name: Routes.DETAIL_MATERI,
+      page: () => const DetailMateriView(),
+      binding: DetailMateriBinding(),
+    ),
+    GetPage(
+      name: Routes.TAMBAH_DETAIL,
+      page: () => const TambahDetailView(),
+      binding: TambahDetailBinding(),
+    ),
+    GetPage(
+      name: Routes.TAMBAH_KALENDER,
+      page: () => const TambahKalenderView(),
+      binding: TambahKalenderBinding(),
     ),
   ];
 }

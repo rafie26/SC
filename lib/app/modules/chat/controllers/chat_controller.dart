@@ -194,9 +194,9 @@ class ChatController extends GetxController {
       ChatConversation(
         id: 'conv_1',
         otherUser: chatUsers.firstWhere((user) => user.id == '3'),
-        lastMessage: 'Selamat pagi pak, saya mau tanya tentang tugas kemarin',
+        lastMessage: 'Saya ingin bertanya pak, apakah boleh?',
         lastMessageTime: DateTime.now().subtract(const Duration(minutes: 5)),
-        unreadCount: 2,
+        unreadCount: 1,
       ),
       ChatConversation(
         id: 'conv_2',

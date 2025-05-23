@@ -22,6 +22,10 @@ abstract class Routes {
   static const CHAT = _Paths.CHAT;
   static const RUANG_CHAT = _Paths.RUANG_CHAT;
   static const TUGAS_DETAIL = _Paths.TUGAS_DETAIL;
+  static const TAMBAH_TUGAS = _Paths.TAMBAH_TUGAS;
+  static const DETAIL_MATERI = _Paths.DETAIL_MATERI;
+  static const TAMBAH_DETAIL = _Paths.TAMBAH_DETAIL;
+  static const TAMBAH_KALENDER = _Paths.TAMBAH_KALENDER;
 }
 
 abstract class _Paths {
@@ -46,4 +50,8 @@ abstract class _Paths {
   static const CHAT = '/chat';
   static const RUANG_CHAT = '/ruang-chat';
   static const TUGAS_DETAIL = '/tugas-detail';
+  static const TAMBAH_TUGAS = '/tambah-tugas';
+  static const DETAIL_MATERI = '/detail-materi';
+  static const TAMBAH_DETAIL = '/tambah-detail';
+  static const TAMBAH_KALENDER = '/tambah-kalender';
 }
