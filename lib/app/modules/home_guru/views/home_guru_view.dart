@@ -482,12 +482,20 @@ class CustomAppBar extends StatelessWidget {
               child: _buildProfilePic(controller),
             ),
             const SizedBox(width: 15),
-            // Comments icon
-            Image.asset(
-              'assets/icons/vaadin_comments.png',
-              width: 30,
-              height: 30,
-              fit: BoxFit.contain,
+            // Comments icon - NOW WITH NAVIGATION TO CHAT
+            GestureDetector(
+              onTap: () {
+                Get.toNamed('/chat');
+              },
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                child: Image.asset(
+                  'assets/icons/vaadin_comments.png',
+                  width: 30,
+                  height: 30,
+                  fit: BoxFit.contain,
+                ),
+              ),
             ),
             const Spacer(),
             // Menu burger icon - now with tap functionality

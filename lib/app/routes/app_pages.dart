@@ -4,6 +4,8 @@ import '../modules/TambahKelas/bindings/tambah_kelas_binding.dart';
 import '../modules/TambahKelas/views/tambah_kelas_view.dart';
 import '../modules/cerita/bindings/cerita_binding.dart';
 import '../modules/cerita/views/cerita_view.dart';
+import '../modules/chat/bindings/chat_binding.dart';
+import '../modules/chat/views/chat_view.dart';
 import '../modules/forgot_password/bindings/forgot_password_binding.dart';
 import '../modules/forgot_password/views/forgot_password_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -28,6 +30,8 @@ import '../modules/profil/bindings/profil_binding.dart';
 import '../modules/profil/views/profil_view.dart';
 import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
+import '../modules/ruang_chat/bindings/ruang_chat_binding.dart';
+import '../modules/ruang_chat/views/ruang_chat_view.dart';
 import '../modules/settings/bindings/settings_binding.dart';
 import '../modules/settings/views/settings_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
@@ -126,6 +130,16 @@ class AppPages {
       name: Routes.FORGOT_PASSWORD,
       page: () => const ForgotPasswordView(),
       binding: ForgotPasswordBinding(),
+    ),
+    GetPage(
+      name: Routes.CHAT,
+      page: () => const ChatView(),
+      binding: ChatBinding(),
+    ),
+    GetPage(
+      name: Routes.RUANG_CHAT,
+      page: () => const RuangChatView(),
+      binding: RuangChatBinding(),
     ),
   ];
 }
