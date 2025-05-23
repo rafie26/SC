@@ -38,6 +38,8 @@ import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
 import '../modules/tugas/bindings/tugas_binding.dart';
 import '../modules/tugas/views/tugas_view.dart';
+import '../modules/tugas_detail/bindings/tugas_detail_binding.dart';
+import '../modules/tugas_detail/views/tugas_detail_view.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -140,6 +142,11 @@ class AppPages {
       name: Routes.RUANG_CHAT,
       page: () => const RuangChatView(),
       binding: RuangChatBinding(),
+    ),
+    GetPage(
+      name: Routes.TUGAS_DETAIL,
+      page: () => const TugasDetailView(),
+      binding: TugasDetailBinding(),
     ),
   ];
 }

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-class TugasController extends GetxController {
+class TugasDetailController extends GetxController {
   // Observable variables
   var selectedFilter = 'Semua'.obs;
   var tugasList = <TugasModel>[].obs;
@@ -29,6 +29,10 @@ class TugasController extends GetxController {
         status: 'Aktif',
         submittedCount: 15,
         totalStudents: 30,
+        description: 'Kerjakan soal-soal integral pada buku paket halaman 145-150. Tuliskan langkah-langkah penyelesaian dengan jelas dan rapi.',
+        attachments: ['soal_integral.pdf', 'contoh_penyelesaian.pdf'],
+        createdDate: '20 Mei 2025',
+        dueTime: '23:59',
       ),
       TugasModel(
         id: '2',
@@ -39,6 +43,10 @@ class TugasController extends GetxController {
         status: 'Aktif',
         submittedCount: 22,
         totalStudents: 28,
+        description: 'Buatlah essay dengan tema "Teknologi dalam Pendidikan" minimal 500 kata. Gunakan bahasa yang baik dan benar.',
+        attachments: ['panduan_essay.pdf'],
+        createdDate: '21 Mei 2025',
+        dueTime: '23:59',
       ),
       TugasModel(
         id: '3',
@@ -49,6 +57,10 @@ class TugasController extends GetxController {
         status: 'Selesai',
         submittedCount: 30,
         totalStudents: 30,
+        description: 'Implementasikan database sekolah dengan minimal 5 tabel yang saling berelasi. Sertakan query untuk CRUD operations.',
+        attachments: ['erd_template.pdf', 'sample_data.sql'],
+        createdDate: '15 Mei 2025',
+        dueTime: '23:59',
       ),
     ];
     
@@ -80,16 +92,55 @@ class TugasController extends GetxController {
   }
 
   void navigateToDetailTugas(String tugasId) {
-    // Navigate to /tugas-detail with tugasId as argument
-    Get.toNamed('/tugas-detail', arguments: {'tugasId': tugasId});
+    Get.toNamed('/detail-tugas', arguments: {'tugasId': tugasId});
   }
 
   void refreshData() {
     loadTugasData();
   }
+
+  // Method to get tugas by ID (used by detail controller)
+  TugasModel? getTugasById(String id) {
+    try {
+      return tugasList.firstWhere((tugas) => tugas.id == id);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Method to update tugas status
+  void updateTugasStatus(String id, String newStatus) {
+    final index = tugasList.indexWhere((tugas) => tugas.id == id);
+    if (index != -1) {
+      // Create updated tugas with new status
+      final updatedTugas = TugasModel(
+        id: tugasList[index].id,
+        title: tugasList[index].title,
+        subject: tugasList[index].subject,
+        kelas: tugasList[index].kelas,
+        deadline: tugasList[index].deadline,
+        status: newStatus,
+        submittedCount: tugasList[index].submittedCount,
+        totalStudents: tugasList[index].totalStudents,
+        description: tugasList[index].description,
+        attachments: tugasList[index].attachments,
+        createdDate: tugasList[index].createdDate,
+        dueTime: tugasList[index].dueTime,
+      );
+      
+      tugasList[index] = updatedTugas;
+      filterTugas(); // Refresh filtered list
+    }
+  }
+
+  // Method to delete tugas
+  void deleteTugas(String id) {
+    tugasList.removeWhere((tugas) => tugas.id == id);
+    filterTugas(); // Refresh filtered list
+  }
 }
 
-// Model class for Tugas
+// Enhanced TugasModel with additional fields for detail view
 class TugasModel {
   final String id;
   final String title;
@@ -99,6 +150,10 @@ class TugasModel {
   final String status;
   final int submittedCount;
   final int totalStudents;
+  final String? description;
+  final List<String>? attachments;
+  final String? createdDate;
+  final String? dueTime;
 
   TugasModel({
     required this.id,
@@ -109,9 +164,12 @@ class TugasModel {
     required this.status,
     required this.submittedCount,
     required this.totalStudents,
+    this.description,
+    this.attachments,
+    this.createdDate,
+    this.dueTime,
   });
 
-  // Convert to JSON
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -122,10 +180,13 @@ class TugasModel {
       'status': status,
       'submittedCount': submittedCount,
       'totalStudents': totalStudents,
+      'description': description,
+      'attachments': attachments,
+      'createdDate': createdDate,
+      'dueTime': dueTime,
     };
   }
 
-  // Create from JSON
   factory TugasModel.fromJson(Map<String, dynamic> json) {
     return TugasModel(
       id: json['id'] ?? '',
@@ -136,6 +197,10 @@ class TugasModel {
       status: json['status'] ?? '',
       submittedCount: json['submittedCount'] ?? 0,
       totalStudents: json['totalStudents'] ?? 0,
+      description: json['description'],
+      attachments: json['attachments']?.cast<String>(),
+      createdDate: json['createdDate'],
+      dueTime: json['dueTime'],
     );
   }
 }
