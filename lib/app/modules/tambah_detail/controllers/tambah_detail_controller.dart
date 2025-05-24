@@ -22,7 +22,7 @@ class TambahDetailController extends GetxController {
   
   // Observable variables
   var selectedSubject = 'Pilih Mata Pelajaran'.obs;
-  var selectedClass = 'Pilih Kelas'.obs;
+  var selectedClasses = <String>[].obs; // Changed to list for multiple selection
   var selectedFile = Rxn<SimulatedFile>();
   var isLoading = false.obs;
   
@@ -44,7 +44,6 @@ class TambahDetailController extends GetxController {
   ].obs;
   
   final classList = [
-    'Pilih Kelas',
     'Kelas 7',
     'Kelas 8',
     'Kelas 9',
@@ -62,9 +61,42 @@ class TambahDetailController extends GetxController {
     selectedSubject.value = subject;
   }
 
-  // Set selected class
-  void setSelectedClass(String kelas) {
-    selectedClass.value = kelas;
+  // Toggle class selection (for multiple selection)
+  void toggleClassSelection(String kelas) {
+    if (selectedClasses.contains(kelas)) {
+      selectedClasses.remove(kelas);
+    } else {
+      selectedClasses.add(kelas);
+    }
+  }
+
+  // Check if a class is selected
+  bool isClassSelected(String kelas) {
+    return selectedClasses.contains(kelas);
+  }
+
+  // Get selected classes as formatted string
+  String get selectedClassesText {
+    if (selectedClasses.isEmpty) {
+      return 'Pilih Kelas';
+    } else if (selectedClasses.length == 1) {
+      return selectedClasses.first;
+    } else if (selectedClasses.length <= 2) {
+      return selectedClasses.join(', ');
+    } else {
+      return '${selectedClasses.take(2).join(', ')} +${selectedClasses.length - 2} lainnya';
+    }
+  }
+
+  // Clear all selected classes
+  void clearSelectedClasses() {
+    selectedClasses.clear();
+  }
+
+  // Select all classes
+  void selectAllClasses() {
+    selectedClasses.clear();
+    selectedClasses.addAll(classList);
   }
 
   // Pick file (simulasi)
@@ -162,10 +194,10 @@ class TambahDetailController extends GetxController {
       return false;
     }
     
-    if (selectedClass.value == 'Pilih Kelas') {
+    if (selectedClasses.isEmpty) {
       Get.snackbar(
         'Validasi Error',
-        'Pilih kelas terlebih dahulu',
+        'Pilih minimal satu kelas',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
@@ -197,34 +229,43 @@ class TambahDetailController extends GetxController {
       // Simulate API call delay
       await Future.delayed(const Duration(seconds: 2));
       
-      // Create new materi model
-      final newMateri = MateriModel(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        title: titleController.text,
-        description: descriptionController.text,
-        subject: selectedSubject.value,
-        kelas: selectedClass.value,
-        type: getFileType(selectedFile.value!.name),
-        fileName: selectedFile.value!.name,
-        fileSize: formatFileSize(selectedFile.value!.size),
-        uploadDate: _formatDate(DateTime.now()),
-        views: 0,
-      );
+      // Create new materi model for each selected class
+      final materiList = <MateriModel>[];
+      
+      for (String kelas in selectedClasses) {
+        final newMateri = MateriModel(
+          id: '${DateTime.now().millisecondsSinceEpoch}_${kelas.replaceAll(' ', '_')}',
+          title: titleController.text,
+          description: descriptionController.text,
+          subject: selectedSubject.value,
+          kelas: kelas,
+          type: getFileType(selectedFile.value!.name),
+          fileName: selectedFile.value!.name,
+          fileSize: formatFileSize(selectedFile.value!.size),
+          uploadDate: _formatDate(DateTime.now()),
+          views: 0,
+        );
+        materiList.add(newMateri);
+      }
       
       // Here you would typically save to your backend/database
       // For now, we'll just show success message
       
+      String successMessage = selectedClasses.length == 1 
+          ? 'Materi berhasil ditambahkan untuk ${selectedClasses.first}'
+          : 'Materi berhasil ditambahkan untuk ${selectedClasses.length} kelas';
+      
       Get.snackbar(
         'Berhasil',
-        'Materi berhasil ditambahkan',
+        successMessage,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.green,
         colorText: Colors.white,
         duration: const Duration(seconds: 2),
       );
       
-      // Navigate back and refresh the previous page
-      Get.back(result: newMateri);
+      // Navigate back and return the list of created materials
+      Get.back(result: materiList);
       
     } catch (e) {
       Get.snackbar(
@@ -249,7 +290,70 @@ class TambahDetailController extends GetxController {
     titleController.clear();
     descriptionController.clear();
     selectedSubject.value = 'Pilih Mata Pelajaran';
-    selectedClass.value = 'Pilih Kelas';
+    selectedClasses.clear();
     selectedFile.value = null;
+  }
+
+  // Show class selection dialog
+  void showClassSelectionDialog() {
+    Get.dialog(
+      AlertDialog(
+        title: const Text('Pilih Kelas'),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Select All / Clear All buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton(
+                    onPressed: selectAllClasses,
+                    child: const Text('Pilih Semua'),
+                  ),
+                  TextButton(
+                    onPressed: clearSelectedClasses,
+                    child: const Text('Hapus Semua'),
+                  ),
+                ],
+              ),
+              const Divider(),
+              // Class list with checkboxes
+              ...classList.map((kelas) => Obx(() => CheckboxListTile(
+                title: Text(kelas),
+                value: isClassSelected(kelas),
+                onChanged: (bool? value) {
+                  toggleClassSelection(kelas);
+                },
+                controlAffinity: ListTileControlAffinity.leading,
+              ))).toList(),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child: const Text('Batal'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Get.back();
+              if (selectedClasses.isNotEmpty) {
+                Get.snackbar(
+                  'Kelas Dipilih',
+                  '${selectedClasses.length} kelas telah dipilih',
+                  snackPosition: SnackPosition.BOTTOM,
+                  backgroundColor: Colors.blue,
+                  colorText: Colors.white,
+                  duration: const Duration(seconds: 1),
+                );
+              }
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
   }
 }

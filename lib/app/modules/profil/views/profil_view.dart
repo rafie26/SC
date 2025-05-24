@@ -142,10 +142,10 @@ class ProfilView extends GetView<ProfilController> {
                   )),
                   
                   Obx(() => ProfileInfoCard(
-                    icon: Icons.phone_outlined,
-                    title: 'Nomor Telepon',
-                    value: controller.profileData['phone'] ?? '',
-                    onTap: () => controller.showEditDialog('Nomor Telepon', 'phone'),
+                    icon: Icons.assignment_ind,
+                    title: 'Nomer Induk',
+                    value: controller.profileData['NI'] ?? '',
+                    onTap: () => controller.showEditDialog('', 'NI'),
                   )),
                   
                   Obx(() => ProfileInfoCard(

@@ -261,7 +261,7 @@ class HomeGuruView extends GetView<HomeGuruController> {
                                 const SizedBox(height: 16),
                                 // Name and role
                                 Text(
-                                  'Rafi Guru',
+                                  'Rafi Iqbal',
                                   style: GoogleFonts.poppins(
                                     fontSize: 22,
                                     fontWeight: FontWeight.w600,

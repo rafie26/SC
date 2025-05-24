@@ -37,46 +37,40 @@ class RuangChatView extends StatelessWidget {
       title: Row(
         children: [
           // Profile Avatar
-          CircleAvatar(
-            radius: 20,
-            backgroundColor: const Color(0xFF8B5CF6),
-            child: Text(
-              'AR',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-          ),
-          const SizedBox(width: 12),
-          // User Info
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Ahmad Rizki',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey[800],
-                  ),
-                ),
-                Obx(() => Text(
-                  controller.isUserBlocked.value 
-                    ? 'Diblokir' 
-                    : 'Online',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: controller.isUserBlocked.value 
-                      ? Colors.red[400] 
-                      : Colors.green[400],
-                  ),
-                )),
-              ],
-            ),
-          ),
+CircleAvatar(
+  radius: 20,
+  backgroundColor: const Color(0xFF8B5CF6),
+  backgroundImage: AssetImage('assets/avatar/rafi1.jpg'), // Ganti dengan nama file foto Anda
+  child: null, // Hapus child karena sudah menggunakan backgroundImage
+),
+const SizedBox(width: 12),
+// User Info
+Expanded(
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        'Ahmad Rizki',
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Colors.grey[800],
+        ),
+      ),
+      Obx(() => Text(
+        controller.isUserBlocked.value 
+          ? 'Diblokir' 
+          : 'Online',
+        style: TextStyle(
+          fontSize: 12,
+          color: controller.isUserBlocked.value 
+            ? Colors.red[400] 
+            : Colors.green[400],
+        ),
+      )),
+    ],
+  ),
+),
         ],
       ),
       actions: [
@@ -250,15 +244,11 @@ class RuangChatView extends StatelessWidget {
           children: [
             if (!isMyMessage) ...[
               CircleAvatar(
-                radius: 12,
-                backgroundColor: Colors.grey[300],
-                child: Icon(
-                  Icons.person,
-                  size: 14,
-                  color: Colors.grey[600],
-                ),
-              ),
-              const SizedBox(width: 8),
+                  radius: 12,
+                   backgroundColor: Colors.grey[300],
+                  backgroundImage: AssetImage('assets/avatar/rafi1.jpg'), // Ganti dengan nama file foto Anda
+                  child: null, // Hapus child karena sudah menggunakan backgroundImage
+                 ),
             ],
             Flexible(
               flex: 3,

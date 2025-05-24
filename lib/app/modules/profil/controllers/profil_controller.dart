@@ -5,13 +5,13 @@ import 'package:google_fonts/google_fonts.dart';
 class ProfilController extends GetxController {
   // Observable profile data
   var profileData = <String, String>{
-    'name': 'Rafi Guru',
+    'name': 'Rafi Iqbal',
     'role': 'Teacher',
     'fullName': 'Rafi Iqbal Firmansyah',
     'email': 'rafi.guru@sevenconnect.com',
-    'phone': '+62 895-6119-99186',
+    'NI': '1140',
     'subject': 'Matematika',
-    'classes': 'X RPL B',
+    'classes': '8-9',
   }.obs;
 
   var profileImagePath = 'assets/Rafi.jpg'.obs;

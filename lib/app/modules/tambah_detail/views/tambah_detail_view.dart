@@ -72,10 +72,10 @@ class TambahDetailView extends GetView<TambahDetailController> {
                     
                     const SizedBox(height: 24),
                     
-                    // Class dropdown
+                    // Class selection (Changed from dropdown to multi-select)
                     _buildSectionTitle('Kelas'),
                     const SizedBox(height: 8),
-                    _buildClassDropdown(),
+                    _buildClassSelector(),
                     
                     const SizedBox(height: 24),
                     
@@ -210,45 +210,80 @@ class TambahDetailView extends GetView<TambahDetailController> {
     ));
   }
 
-  Widget _buildClassDropdown() {
-    return Obx(() => Container(
-      decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: DropdownButtonFormField<String>(
-        value: controller.selectedClass.value,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
+  // NEW: Class selector with multi-selection capability
+  Widget _buildClassSelector() {
+    return Obx(() => InkWell(
+      onTap: controller.showClassSelectionDialog,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.grey[100],
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: controller.selectedClasses.isEmpty 
+                ? Colors.transparent 
+                : const Color(0xFF6C1FB4),
+            width: controller.selectedClasses.isEmpty ? 0 : 1,
           ),
-          contentPadding: const EdgeInsets.all(16),
         ),
-        style: GoogleFonts.poppins(
-          fontSize: 14,
-          color: Colors.black,
-        ),
-        dropdownColor: Colors.white,
-        items: controller.classList.map((String kelas) {
-          return DropdownMenuItem<String>(
-            value: kelas,
-            child: Text(
-              kelas,
-              style: GoogleFonts.poppins(
-                fontSize: 14,
-                color: kelas == 'Pilih Kelas' ? Colors.grey[500] : Colors.black,
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    controller.selectedClassesText,
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      color: controller.selectedClasses.isEmpty 
+                          ? Colors.grey[500] 
+                          : Colors.black,
+                    ),
+                  ),
+                  if (controller.selectedClasses.isNotEmpty) ...[
+                    const SizedBox(height: 4),
+                    _buildSelectedClassesTags(),
+                  ],
+                ],
               ),
             ),
-          );
-        }).toList(),
-        onChanged: (String? newValue) {
-          if (newValue != null) {
-            controller.setSelectedClass(newValue);
-          }
-        },
+            Icon(
+              Icons.arrow_drop_down,
+              color: Colors.grey[600],
+            ),
+          ],
+        ),
       ),
     ));
+  }
+
+  // NEW: Display selected classes as tags
+  Widget _buildSelectedClassesTags() {
+    return Wrap(
+      spacing: 6,
+      runSpacing: 4,
+      children: controller.selectedClasses.map((kelas) => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+          color: const Color(0xFF6C1FB4).withOpacity(0.1),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: const Color(0xFF6C1FB4).withOpacity(0.3),
+            width: 1,
+          ),
+        ),
+        child: Text(
+          kelas,
+          style: GoogleFonts.poppins(
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+            color: const Color(0xFF6C1FB4),
+          ),
+        ),
+      )).toList(),
+    );
   }
 
   Widget _buildFileUploadSection() {
