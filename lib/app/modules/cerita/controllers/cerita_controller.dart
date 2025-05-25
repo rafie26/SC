@@ -19,42 +19,42 @@ class CeritaController extends GetxController {
   final List<Map<String, String>> _friendsList = [
     {
       'name': 'Siti Nurhaliza',
-      'className': 'X RPL A', 
+      'className': 'Teacher', 
       'avatar': 'assets/avatar/siti.jpg',
     },
     {
       'name': 'Budi Santoso',
-      'className': 'X RPL B',
+      'className': 'Teacher',
       'avatar': 'assets/avatar/budi.jpg',
     },
     {
       'name': 'Dewi Sartika',
-      'className': 'X RPL C',
+      'className': '9B',
       'avatar': 'assets/avatar/dewi.jpg',
     },
     {
       'name': 'Ahmad Fauzi',
-      'className': 'X TKJ A',
+      'className': '9B',
       'avatar': 'assets/avatar/ahmad.jpg',
     },
     {
       'name': 'Maya Putri',
-      'className': 'X MM A',
+      'className': '9B',
       'avatar': 'assets/avatar/maya.jpg',
     },
     {
       'name': 'Rio Pratama',
-      'className': 'X RPL B',
+      'className': '9B',
       'avatar': 'assets/avatar/rio.jpg',
     },
     {
       'name': 'Lestari Wulan',
-      'className': 'X TKJ B',
+      'className': '9B',
       'avatar': 'assets/avatar/lestari.jpg',
     },
     {
       'name': 'Fahmi Ramadhan',
-      'className': 'X RPL A',
+      'className': '9B',
       'avatar': 'assets/avatar/fahmi.jpg',
     },
   ];

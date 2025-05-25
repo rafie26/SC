@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class ProfilController extends GetxController {
   // Observable profile data
-  var profileData = <String, String>{
+  var profileData = <String, dynamic>{
     'name': 'Rafi Iqbal',
     'role': 'Teacher',
     'fullName': 'Rafi Iqbal Firmansyah',
@@ -12,6 +12,9 @@ class ProfilController extends GetxController {
     'NI': '1140',
     'subject': 'Matematika',
     'classes': '8-9',
+    'postsCount': 12,
+    'likesCount': 156,
+    'friendsCount': 26,
   }.obs;
 
   var profileImagePath = 'assets/Rafi.jpg'.obs;
@@ -30,7 +33,7 @@ class ProfilController extends GetxController {
 
   void showEditDialog(String title, String key) {
     final TextEditingController controller = TextEditingController(
-      text: profileData[key] ?? '',
+      text: profileData[key]?.toString() ?? '',
     );
     
     Get.dialog(
@@ -228,9 +231,31 @@ class ProfilController extends GetxController {
     // }
   }
 
-  void updateProfileData(String key, String value) {
+  void updateProfileData(String key, dynamic value) {
     profileData[key] = value;
     profileData.refresh(); // Trigger UI update
+  }
+
+  void updateStatistics(int posts, int likes, int friends) {
+    profileData['postsCount'] = posts;
+    profileData['likesCount'] = likes;
+    profileData['friendsCount'] = friends;
+    profileData.refresh();
+  }
+
+  void incrementPostCount() {
+    int currentPosts = profileData['postsCount'] ?? 0;
+    updateProfileData('postsCount', currentPosts + 1);
+  }
+
+  void incrementLikeCount() {
+    int currentLikes = profileData['likesCount'] ?? 0;
+    updateProfileData('likesCount', currentLikes + 1);
+  }
+
+  void incrementFriendCount() {
+    int currentFriends = profileData['friendsCount'] ?? 0;
+    updateProfileData('friendsCount', currentFriends + 1);
   }
 
   void saveProfile() {

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -94,7 +93,7 @@ class TambahKelasView extends GetView<TambahKelasController> {
 
                       const SizedBox(height: 30),
 
-                      // Form Tingkat Kelas
+                      // Form Tingkat Kelas - Dropdown
                       Padding(
                         padding: const EdgeInsets.only(left: 20),
                         child: Text(
@@ -116,64 +115,35 @@ class TambahKelasView extends GetView<TambahKelasController> {
                             width: 1,
                           ),
                         ),
-                        child: Obx(() => ExpansionTile(
-                          title: Text(
-                            controller.selectedTingkatKelas.value.isNotEmpty
-                                ? controller.selectedTingkatKelas.value
-                                : 'Pilih Tingkat Kelas',
-                            style: GoogleFonts.poppins(
+                        child: Obx(() => DropdownButtonFormField<String>(
+                          value: controller.selectedTingkatKelas.value.isEmpty 
+                              ? null 
+                              : controller.selectedTingkatKelas.value,
+                          decoration: InputDecoration(
+                            hintText: 'Pilih tingkat kelas',
+                            hintStyle: GoogleFonts.poppins(
+                              color: Colors.grey,
                               fontSize: 14,
-                              color: controller.selectedTingkatKelas.value.isNotEmpty
-                                  ? Colors.black
-                                  : Colors.grey,
                             ),
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                            border: InputBorder.none,
                           ),
-                          trailing: const Icon(Icons.keyboard_arrow_down),
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
-                              child: Column(
-                                children: [
-                                  RadioListTile<String>(
-                                    title: Text(
-                                      'Kelas 7',
-                                      style: GoogleFonts.poppins(fontSize: 14),
-                                    ),
-                                    value: 'Kelas 7',
-                                    groupValue: controller.selectedTingkatKelas.value,
-                                    onChanged: (String? value) {
-                                      controller.setTingkatKelas(value ?? '');
-                                    },
-                                    contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                                  ),
-                                  RadioListTile<String>(
-                                    title: Text(
-                                      'Kelas 8',
-                                      style: GoogleFonts.poppins(fontSize: 14),
-                                    ),
-                                    value: 'Kelas 8',
-                                    groupValue: controller.selectedTingkatKelas.value,
-                                    onChanged: (String? value) {
-                                      controller.setTingkatKelas(value ?? '');
-                                    },
-                                    contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                                  ),
-                                  RadioListTile<String>(
-                                    title: Text(
-                                      'Kelas 9',
-                                      style: GoogleFonts.poppins(fontSize: 14),
-                                    ),
-                                    value: 'Kelas 9',
-                                    groupValue: controller.selectedTingkatKelas.value,
-                                    onChanged: (String? value) {
-                                      controller.setTingkatKelas(value ?? '');
-                                    },
-                                    contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                          style: GoogleFonts.poppins(
+                            fontSize: 14,
+                            color: Colors.black,
+                          ),
+                          icon: const Icon(
+                            Icons.keyboard_arrow_down,
+                            color: Colors.grey,
+                          ),
+                          dropdownColor: Colors.white,
+                          menuMaxHeight: 200, // Batasi tinggi dropdown menu
+                          items: _buildDropdownItems(),
+                          onChanged: (String? newValue) {
+                            if (newValue != null) {
+                              controller.setTingkatKelas(newValue);
+                            }
+                          },
                         )),
                       ),
 
@@ -214,5 +184,26 @@ class TambahKelasView extends GetView<TambahKelasController> {
         ),
       ),
     );
+  }
+
+  List<DropdownMenuItem<String>> _buildDropdownItems() {
+    List<String> kelasOptions = [
+      '7A', '7B', '7C', '7D',
+      '8A', '8B', '8C', '8D',
+      '9A', '9B', '9C', '9D',
+    ];
+
+    return kelasOptions.map((String kelas) {
+      return DropdownMenuItem<String>(
+        value: kelas,
+        child: Text(
+          kelas,
+          style: GoogleFonts.poppins(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      );
+    }).toList();
   }
 }

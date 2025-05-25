@@ -218,7 +218,7 @@ GetBuilder<CeritaController>(
                       storyId: 'story_2',
                       profileImage: 'assets/avatar/rafi1.jpg',
                       name: 'Ahmad Rizki',
-                      className: 'X RPL B',
+                      className: '9B',
                       timeAgo: '15 minutes ago',
                       storyImage: 'assets/ghibli/gunung.jpg',
                       caption: 'Pemandangan indah di taman sekolah 🌸',
@@ -228,7 +228,7 @@ GetBuilder<CeritaController>(
                       storyId: 'story_3',
                       profileImage: 'assets/avatar/rafi2.jpg',
                       name: 'Antok Simanjuntak',
-                      className: 'X RPL A',
+                      className: '9B',
                       timeAgo: '32 minutes ago',
                       storyImage: 'assets/ghibli/rpl.jpg',
                       caption: 'Belajar coding hari ini sangat menyenangkan! 💻',
@@ -238,7 +238,7 @@ GetBuilder<CeritaController>(
                       storyId: 'story_4',
                       profileImage: 'assets/avatar/rafi3.jpg',
                       name: 'Arip Kopling',
-                      className: 'X RPL C',
+                      className: '9B',
                       timeAgo: '1 hour ago',
                       storyImage: 'assets/ghibli/ponyo.jpg',
                       caption: 'Saya lihat ikan dengan ponyo',
@@ -871,253 +871,196 @@ GetBuilder<CeritaController>(
   }
 
   void _handleShare(String storyId, String authorName, String caption) {
-    // Show share to friends dialog
-    Get.bottomSheet(
-      Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(16),
-            topRight: Radius.circular(16),
-          ),
+  // Show share to group 9B dialog
+  Get.bottomSheet(
+    Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(height: 8),
-            Container(
-              width: 40,
-              height: 4,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(height: 8),
+          Container(
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Bagikan Cerita',
+            style: GoogleFonts.inter(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          const SizedBox(height: 20),
+          // Share to group 9B section
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Container(
+              width: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(2),
+                color: Colors.purple.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.purple.withOpacity(0.3)),
               ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'Bagikan Cerita',
-              style: GoogleFonts.inter(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-            const SizedBox(height: 16),
-            // Quick share options
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildQuickShareOption(Icons.message, 'WhatsApp', Colors.green),
-                  _buildQuickShareOption(Icons.telegram, 'Telegram', Colors.blue),
-                  _buildQuickShareOption(Icons.copy, 'Salin Link', Colors.grey),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Divider(),
-            const SizedBox(height: 10),
-            // Share to friends section
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Bagikan ke Teman',
+              child: ListTile(
+                leading: CircleAvatar(
+                  radius: 20,
+                  backgroundColor: Colors.purple,
+                  child: Text(
+                    '9B',
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                title: Text(
+                  'Grup 9B',
                   style: GoogleFonts.inter(
                     fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                     color: Colors.black,
                   ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 12),
-            // Friends list
-            Container(
-              height: 200,
-              child: GetBuilder<CeritaController>(
-                builder: (controller) => ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  itemCount: controller.friendsList.length,
-                  itemBuilder: (context, index) {
-                    final friend = controller.friendsList[index];
-                    return _buildFriendItem(
-                      friend['name']!,
-                      friend['className']!,
-                      friend['avatar']!,
-                      () {
-                        controller.shareToFriend(storyId, friend['name']!, authorName, caption);
-                        Get.back();
-                      },
-                    );
-                  },
+                subtitle: Text(
+                  'Bagikan ke grup kelas',
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    color: Colors.grey[600],
+                  ),
                 ),
+                trailing: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.purple,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    'Bagikan',
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  // Handle share to group 9B
+                  Get.back();
+                  Get.snackbar(
+                    'Berhasil',
+                    'Cerita berhasil dibagikan ke Grup 9B',
+                    snackPosition: SnackPosition.BOTTOM,
+                    duration: const Duration(seconds: 2),
+                    backgroundColor: Colors.purple,
+                    colorText: Colors.white,
+                  );
+                  
+                  // You can add your logic here to actually share to group 9B
+                  // Example: controller.shareToGroup9B(storyId, authorName, caption);
+                },
               ),
             ),
-            const SizedBox(height: 16),
-          ],
-        ),
+          ),
+          const SizedBox(height: 24),
+        ],
       ),
-      isScrollControlled: true,
-    );
-  }
+    ),
+    isScrollControlled: true,
+  );
+}
 
-  Widget _buildQuickShareOption(IconData icon, String label, Color color) {
+Widget _buildBottomNavigationBar(NavbarController controller) {
+  return Container(
+    decoration: BoxDecoration(
+      color: Colors.white,
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.3),
+          spreadRadius: 1,
+          blurRadius: 5,
+          offset: const Offset(0, -1),
+        ),
+      ],
+    ),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildNavItem(controller, 0, 'Ruang Kelas', Icons.people, Colors.black),
+          _buildNavItem(controller, 1, 'Cerita', Icons.image, Colors.purple),
+          _buildAddButton(controller),
+          _buildNavItem(controller, 3, 'Obrolan', Icons.chat_bubble_outline, Colors.black),
+          _buildNavItem(controller, 4, 'Notifikasi', Icons.notifications_none, Colors.black),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget _buildNavItem(NavbarController controller, int index, String label, IconData icon, Color defaultColor) {
+  return Obx(() {
+    final isSelected = controller.selectedIndex.value == index;
+    final color = isSelected ? Colors.purple : defaultColor;
+    
     return InkWell(
       onTap: () {
-        Get.back();
-        Get.snackbar(
-          'Bagikan',
-          'Dibagikan ke $label',
-          snackPosition: SnackPosition.BOTTOM,
-          duration: const Duration(seconds: 2),
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-        );
+        controller.changeIndex(index);
       },
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(25),
-            ),
-            child: Icon(icon, color: color, size: 24),
+          Icon(
+            icon,
+            color: color,
+            size: 24,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 2),
           Text(
             label,
-            style: const TextStyle(fontSize: 12),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFriendItem(String name, String className, String avatar, VoidCallback onTap) {
-    return ListTile(
-      leading: CircleAvatar(
-        radius: 20,
-        backgroundImage: AssetImage(avatar),
-        backgroundColor: Colors.grey,
-      ),
-      title: Text(
-        name,
-        style: GoogleFonts.inter(
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-          color: Colors.black,
-        ),
-      ),
-      subtitle: Text(
-        className,
-        style: GoogleFonts.inter(
-          fontSize: 12,
-          color: Colors.grey[600],
-        ),
-      ),
-      trailing: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-        decoration: BoxDecoration(
-          color: Colors.purple,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Text(
-          'Kirim',
-          style: GoogleFonts.inter(
-            fontSize: 12,
-            color: Colors.white,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ),
-      onTap: onTap,
-    );
-  }
-
-  Widget _buildBottomNavigationBar(NavbarController controller) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
-            spreadRadius: 1,
-            blurRadius: 5,
-            offset: const Offset(0, -1),
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _buildNavItem(controller, 0, 'Ruang Kelas', Icons.people, Colors.black),
-            _buildNavItem(controller, 1, 'Cerita', Icons.image, Colors.purple),
-            _buildAddButton(controller),
-            _buildNavItem(controller, 3, 'Obrolan', Icons.chat_bubble_outline, Colors.black),
-            _buildNavItem(controller, 4, 'Notifikasi', Icons.notifications_none, Colors.black),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNavItem(NavbarController controller, int index, String label, IconData icon, Color defaultColor) {
-    return Obx(() {
-      final isSelected = controller.selectedIndex.value == index;
-      final color = isSelected ? Colors.purple : defaultColor;
-      
-      return InkWell(
-        onTap: () {
-          controller.changeIndex(index);
-        },
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
+            style: TextStyle(
+              fontSize: 12,
               color: color,
-              size: 24,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
             ),
-            const SizedBox(height: 2),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 12,
-                color: color,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-              ),
-            ),
-          ],
-        ),
-      );
-    });
-  }
-
-  Widget _buildAddButton(NavbarController controller) {
-    return InkWell(
-      onTap: () {
-        controller.changeIndex(2);
-      },
-      child: Container(
-        width: 48,
-        height: 48,
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.purple,
-        ),
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-          size: 28,
-        ),
+          ),
+        ],
       ),
     );
-  }
+  });
+}
+
+Widget _buildAddButton(NavbarController controller) {
+  return InkWell(
+    onTap: () {
+      controller.changeIndex(2);
+    },
+    child: Container(
+      width: 48,
+      height: 48,
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.purple,
+      ),
+      child: const Icon(
+        Icons.add,
+        color: Colors.white,
+        size: 28,
+      ),
+    ),
+  );
+}
 }

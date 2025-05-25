@@ -55,7 +55,7 @@ class KelasView extends GetView<KelasController> {
       title: Obx(() => Text(
         controller.isManagingStudents.value 
           ? '${controller.selectedStudents.length} Dipilih'
-          : 'X RPL B',
+          : '9B',
         style: GoogleFonts.poppins(
           fontSize: 18.0,
           fontWeight: FontWeight.bold,

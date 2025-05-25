@@ -28,8 +28,6 @@ flutter:
     - assets/
     - assets/icons/vaadin_comments.png
     - assets/icons/bumi.png
-    - assets/avatar/rafi1.jpg
-    - assets/avatar/rafi2.jpg
-    - assets/avatar/rafi3.jpg
+    - assets/avatar/
     - assets/ghibli/
 

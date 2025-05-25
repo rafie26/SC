@@ -2,92 +2,142 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class TambahKelasController extends GetxController {
-  // Controller untuk halaman tambah kelas
+  // Text controller untuk nama kelas
+  final TextEditingController namaKelasController = TextEditingController();
   
-  // Text controller untuk input field
-  late TextEditingController namaKelasController;
+  // Observable untuk tingkat kelas yang dipilih
+  var selectedTingkatKelas = ''.obs;
   
-  // Variabel yang bisa Anda gunakan untuk menyimpan data form
-  final namaKelas = ''.obs;
-  final deskripsiKelas = ''.obs;
-  final kapasitasMaks = 0.obs;
-  
-  // Observable string untuk menyimpan tingkat kelas yang dipilih (single selection)
-  final selectedTingkatKelas = ''.obs;
-  
+  // Loading state
+  var isLoading = false.obs;
+
   @override
   void onInit() {
     super.onInit();
-    // Inisialisasi text controller
-    namaKelasController = TextEditingController();
-    
-    // Listen for changes pada text field
-    namaKelasController.addListener(() {
-      namaKelas.value = namaKelasController.text;
-    });
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-    // Logic yang dijalankan saat halaman siap ditampilkan
+    // Initialize any required data here
   }
 
   @override
   void onClose() {
-    // Dispose controller untuk mencegah memory leak
+    // Dispose text controller when controller is closed
     namaKelasController.dispose();
     super.onClose();
   }
-  
-  // Method untuk set tingkat kelas (single selection)
-  void setTingkatKelas(String tingkat) {
-    selectedTingkatKelas.value = tingkat;
+
+  // Method untuk set tingkat kelas
+  void setTingkatKelas(String tingkatKelas) {
+    selectedTingkatKelas.value = tingkatKelas;
   }
-  
-  // Method untuk clear selection tingkat kelas
-  void clearTingkatKelas() {
-    selectedTingkatKelas.value = '';
-  }
-  
-  // Method untuk membuat kelas baru
-  void buatKelasBaru() {
-    // Validasi input
-    if (namaKelasController.text.isEmpty) {
+
+  // Method untuk validasi form
+  bool _validateForm() {
+    if (namaKelasController.text.trim().isEmpty) {
       Get.snackbar(
         'Error',
         'Nama kelas tidak boleh kosong',
+        snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.red,
         colorText: Colors.white,
+        duration: const Duration(seconds: 3),
       );
-      return;
+      return false;
     }
-    
+
     if (selectedTingkatKelas.value.isEmpty) {
       Get.snackbar(
         'Error',
         'Pilih tingkat kelas terlebih dahulu',
+        snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.red,
         colorText: Colors.white,
+        duration: const Duration(seconds: 3),
       );
+      return false;
+    }
+
+    return true;
+  }
+
+  // Method untuk membuat kelas baru
+  Future<void> buatKelasBaru() async {
+    // Validasi form terlebih dahulu
+    if (!_validateForm()) {
       return;
     }
+
+    try {
+      // Set loading state
+      isLoading.value = true;
+
+      // Simulasi API call atau database operation
+      // Ganti dengan logic sesuai kebutuhan aplikasi Anda
+      await _saveKelasToDatabase();
+
+      // Show success message
+      Get.snackbar(
+        'Berhasil',
+        'Kelas "${namaKelasController.text}" berhasil dibuat',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 2),
+      );
+
+      // Clear form
+      _clearForm();
+
+      // Navigate to home-guru page
+      Get.offAllNamed('/home-guru');
+      
+    } catch (error) {
+      // Handle error
+      Get.snackbar(
+        'Error',
+        'Gagal membuat kelas: ${error.toString()}',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 3),
+      );
+    } finally {
+      // Reset loading state
+      isLoading.value = false;
+    }
+  }
+
+  // Method untuk menyimpan kelas ke database
+  Future<void> _saveKelasToDatabase() async {
+    // Simulasi delay untuk API call
+    await Future.delayed(const Duration(seconds: 1));
     
-    // Implementasi logika pembuatan kelas baru
-    // Contoh:
-    // 1. Kirim request ke API
-    print('Nama Kelas: ${namaKelasController.text}');
+    // TODO: Implement actual database/API logic here
+    // Example:
+    /*
+    final kelasData = {
+      'nama_kelas': namaKelasController.text.trim(),
+      'tingkat_kelas': selectedTingkatKelas.value,
+      'created_at': DateTime.now().toIso8601String(),
+    };
+    
+    // Call your API or database service
+    // await ApiService.createKelas(kelasData);
+    // or
+    // await DatabaseService.insertKelas(kelasData);
+    */
+    
+    print('Kelas Data:');
+    print('Nama Kelas: ${namaKelasController.text.trim()}');
     print('Tingkat Kelas: ${selectedTingkatKelas.value}');
-    
-    // 2. Handle response
-    Get.snackbar(
-      'Berhasil',
-      'Kelas berhasil dibuat',
-      backgroundColor: Colors.green,
-      colorText: Colors.white,
-    );
-    
-    // 3. Navigasi kembali ke halaman sebelumnya jika berhasil
-    Get.back();
+  }
+
+  // Method untuk membersihkan form
+  void _clearForm() {
+    namaKelasController.clear();
+    selectedTingkatKelas.value = '';
+  }
+
+  // Method untuk reset form (bisa dipanggil dari luar jika perlu)
+  void resetForm() {
+    _clearForm();
   }
 }

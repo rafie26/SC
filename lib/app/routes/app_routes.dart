@@ -26,6 +26,7 @@ abstract class Routes {
   static const DETAIL_MATERI = _Paths.DETAIL_MATERI;
   static const TAMBAH_DETAIL = _Paths.TAMBAH_DETAIL;
   static const TAMBAH_KALENDER = _Paths.TAMBAH_KALENDER;
+  static const GRUB = _Paths.GRUB;
 }
 
 abstract class _Paths {
@@ -54,4 +55,5 @@ abstract class _Paths {
   static const DETAIL_MATERI = '/detail-materi';
   static const TAMBAH_DETAIL = '/tambah-detail';
   static const TAMBAH_KALENDER = '/tambah-kalender';
+  static const GRUB = '/grub';
 }

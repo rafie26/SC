@@ -22,7 +22,7 @@ class TambahDetailController extends GetxController {
   
   // Observable variables
   var selectedSubject = 'Pilih Mata Pelajaran'.obs;
-  var selectedClasses = <String>[].obs; // Changed to list for multiple selection
+  var selectedClasses = <String>[].obs; // List for multiple class selection
   var selectedFile = Rxn<SimulatedFile>();
   var isLoading = false.obs;
   
@@ -43,10 +43,11 @@ class TambahDetailController extends GetxController {
     'Agama',
   ].obs;
   
+  // Updated class list to match the view's detailed classes
   final classList = [
-    'Kelas 7',
-    'Kelas 8',
-    'Kelas 9',
+    '7A', '7B', '7C', '7D',
+    '8A', '8B', '8C', '8D',
+    '9A', '9B', '9C', '9D',
   ].obs;
 
   @override
@@ -73,6 +74,22 @@ class TambahDetailController extends GetxController {
   // Check if a class is selected
   bool isClassSelected(String kelas) {
     return selectedClasses.contains(kelas);
+  }
+
+  // Add multiple classes to selection
+  void addClassesToSelection(List<String> classes) {
+    for (String kelas in classes) {
+      if (!selectedClasses.contains(kelas)) {
+        selectedClasses.add(kelas);
+      }
+    }
+  }
+
+  // Remove multiple classes from selection
+  void removeClassesFromSelection(List<String> classes) {
+    for (String kelas in classes) {
+      selectedClasses.remove(kelas);
+    }
   }
 
   // Get selected classes as formatted string
@@ -105,14 +122,16 @@ class TambahDetailController extends GetxController {
       // Simulasi loading
       await Future.delayed(const Duration(milliseconds: 500));
       
-      // Daftar file simulasi
+      // Daftar file simulasi yang lebih bervariasi
       final simulatedFiles = [
-        SimulatedFile(name: 'Matematika_Kelas_5.pdf', size: 2048576, path: '/documents/math.pdf'),
-        SimulatedFile(name: 'Video_Pembelajaran_IPA.mp4', size: 15728640, path: '/videos/science.mp4'),
-        SimulatedFile(name: 'Presentasi_Bahasa_Indonesia.pptx', size: 5242880, path: '/presentations/bahasa.pptx'),
-        SimulatedFile(name: 'Soal_Latihan_Matematika.docx', size: 1048576, path: '/documents/soal.docx'),
-        SimulatedFile(name: 'Materi_PKN_Pancasila.pdf', size: 3145728, path: '/documents/pkn.pdf'),
-        SimulatedFile(name: 'Video_Seni_Tari.mov', size: 25165824, path: '/videos/seni.mov'),
+        SimulatedFile(name: 'Matematika_Kelas_7_Aljabar.pdf', size: 2048576, path: '/documents/math_7.pdf'),
+        SimulatedFile(name: 'Video_Pembelajaran_IPA_Fisika.mp4', size: 15728640, path: '/videos/science_physics.mp4'),
+        SimulatedFile(name: 'Presentasi_Bahasa_Indonesia_Puisi.pptx', size: 5242880, path: '/presentations/bahasa_puisi.pptx'),
+        SimulatedFile(name: 'Soal_Latihan_Matematika_Geometri.docx', size: 1048576, path: '/documents/soal_geometri.docx'),
+        SimulatedFile(name: 'Materi_PKN_Pancasila_dan_UUD.pdf', size: 3145728, path: '/documents/pkn_pancasila.pdf'),
+        SimulatedFile(name: 'Video_Seni_Tari_Tradisional.mov', size: 25165824, path: '/videos/seni_tari.mov'),
+        SimulatedFile(name: 'Modul_IPS_Sejarah_Indonesia.pdf', size: 4194304, path: '/documents/ips_sejarah.pdf'),
+        SimulatedFile(name: 'Audio_Pembelajaran_Bahasa_Inggris.mp3', size: 8388608, path: '/audio/english_listening.mp3'),
       ];
       
       // Pilih file random
@@ -143,7 +162,7 @@ class TambahDetailController extends GetxController {
     selectedFile.value = null;
   }
 
-  // Get file type from extension
+  // Get file type from extension (updated to handle more types)
   String getFileType(String fileName) {
     String extension = fileName.split('.').last.toLowerCase();
     switch (extension) {
@@ -152,6 +171,8 @@ class TambahDetailController extends GetxController {
       case 'mp4':
       case 'avi':
       case 'mov':
+      case 'mkv':
+      case 'wmv':
         return 'Video';
       case 'ppt':
       case 'pptx':
@@ -159,6 +180,15 @@ class TambahDetailController extends GetxController {
       case 'doc':
       case 'docx':
         return 'Document';
+      case 'mp3':
+      case 'wav':
+      case 'aac':
+        return 'Audio';
+      case 'jpg':
+      case 'jpeg':
+      case 'png':
+      case 'gif':
+        return 'Image';
       default:
         return 'File';
     }
@@ -252,7 +282,7 @@ class TambahDetailController extends GetxController {
       // For now, we'll just show success message
       
       String successMessage = selectedClasses.length == 1 
-          ? 'Materi berhasil ditambahkan untuk ${selectedClasses.first}'
+          ? 'Materi berhasil ditambahkan untuk kelas ${selectedClasses.first}'
           : 'Materi berhasil ditambahkan untuk ${selectedClasses.length} kelas';
       
       Get.snackbar(
@@ -261,8 +291,11 @@ class TambahDetailController extends GetxController {
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.green,
         colorText: Colors.white,
-        duration: const Duration(seconds: 2),
+        duration: const Duration(seconds: 3),
       );
+      
+      // Clear form after successful save
+      clearForm();
       
       // Navigate back and return the list of created materials
       Get.back(result: materiList);
@@ -294,7 +327,37 @@ class TambahDetailController extends GetxController {
     selectedFile.value = null;
   }
 
-  // Show class selection dialog
+  // Get grouped classes for display (used in view)
+  Map<String, List<String>> get groupedClasses {
+    return {
+      'Kelas 8': ['8B', '8D',],
+      'Kelas 9': ['9D',],
+    };
+  }
+
+  // Check if all classes in a grade are selected
+  bool isGradeFullySelected(List<String> gradeClasses) {
+    return gradeClasses.every((c) => selectedClasses.contains(c));
+  }
+
+  // Toggle selection for entire grade
+  void toggleGradeSelection(List<String> gradeClasses) {
+    if (isGradeFullySelected(gradeClasses)) {
+      removeClassesFromSelection(gradeClasses);
+    } else {
+      addClassesToSelection(gradeClasses);
+    }
+  }
+
+  // Get display text for selected classes count
+  String get selectedClassesDisplayText {
+    if (selectedClasses.isEmpty) {
+      return 'Pilih kelas';
+    }
+    return '${selectedClasses.length} kelas dipilih';
+  }
+
+  // Show class selection dialog (legacy method - kept for compatibility)
   void showClassSelectionDialog() {
     Get.dialog(
       AlertDialog(

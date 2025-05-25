@@ -74,7 +74,7 @@ class HomeGuruView extends GetView<HomeGuruController> {
                             // Modified Class item with complete container
                             NavigableClassItem(
                               iconAsset: 'assets/icons/bumi.png',
-                              className: 'X RPL B',
+                              className: 'Matematika 9B',
                               onTap: () {
                                 // Navigate to Kelas page
                                 Get.toNamed('/kelas');

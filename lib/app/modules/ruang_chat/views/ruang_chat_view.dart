@@ -246,8 +246,8 @@ Expanded(
               CircleAvatar(
                   radius: 12,
                    backgroundColor: Colors.grey[300],
-                  backgroundImage: AssetImage('assets/avatar/rafi1.jpg'), // Ganti dengan nama file foto Anda
-                  child: null, // Hapus child karena sudah menggunakan backgroundImage
+                  backgroundImage: AssetImage('assets/avatar/rafi1.jpg'), 
+                  child: null, 
                  ),
             ],
             Flexible(

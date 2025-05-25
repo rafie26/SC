@@ -108,6 +108,63 @@ class ProfilView extends GetView<ProfilController> {
               ),
             ),
             
+            const SizedBox(height: 20),
+            
+            // Statistics Section
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.1),
+                      spreadRadius: 2,
+                      blurRadius: 10,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Obx(() => StatisticItem(
+                        icon: Icons.article_outlined,
+                        count: controller.profileData['postsCount'] ?? 0,
+                        label: 'Post',
+                        color: const Color(0xFF6C1FB4),
+                      )),
+                      Container(
+                        width: 1,
+                        height: 50,
+                        color: Colors.grey[300],
+                      ),
+                      Obx(() => StatisticItem(
+                        icon: Icons.favorite_outline,
+                        count: controller.profileData['likesCount'] ?? 0,
+                        label: 'Like',
+                        color: Colors.red[400]!,
+                      )),
+                      Container(
+                        width: 1,
+                        height: 50,
+                        color: Colors.grey[300],
+                      ),
+                      Obx(() => StatisticItem(
+                        icon: Icons.people_outline,
+                        count: controller.profileData['friendsCount'] ?? 0,
+                        label: 'Teman',
+                        color: Colors.green[400]!,
+                      )),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            
             const SizedBox(height: 30),
             
             // Profile Information Section
@@ -222,6 +279,61 @@ class ProfilView extends GetView<ProfilController> {
           ],
         ),
       ),
+    );
+  }
+}
+
+// Statistic Item Widget
+class StatisticItem extends StatelessWidget {
+  final IconData icon;
+  final int count;
+  final String label;
+  final Color color;
+
+  const StatisticItem({
+    Key? key,
+    required this.icon,
+    required this.count,
+    required this.label,
+    required this.color,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          width: 45,
+          height: 45,
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(
+            icon,
+            color: color,
+            size: 24,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          count.toString(),
+          style: GoogleFonts.poppins(
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+            color: Colors.black87,
+          ),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          label,
+          style: GoogleFonts.poppins(
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+            color: Colors.grey[600],
+          ),
+        ),
+      ],
     );
   }
 }

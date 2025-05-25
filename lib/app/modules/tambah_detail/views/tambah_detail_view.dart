@@ -72,10 +72,10 @@ class TambahDetailView extends GetView<TambahDetailController> {
                     
                     const SizedBox(height: 24),
                     
-                    // Class selection (Changed from dropdown to multi-select)
+                    // Class selection dropdown (Multi-select)
                     _buildSectionTitle('Kelas'),
                     const SizedBox(height: 8),
-                    _buildClassSelector(),
+                    _buildClassMultiSelectDropdown(),
                     
                     const SizedBox(height: 24),
                     
@@ -210,22 +210,17 @@ class TambahDetailView extends GetView<TambahDetailController> {
     ));
   }
 
-  // NEW: Class selector with multi-selection capability
-  Widget _buildClassSelector() {
-    return Obx(() => InkWell(
-      onTap: controller.showClassSelectionDialog,
+  // NEW: Multi-select dropdown for classes
+  Widget _buildClassMultiSelectDropdown() {
+    return Obx(() => GestureDetector(
+      onTap: _showClassSelectionBottomSheet,
       child: Container(
         width: double.infinity,
+        constraints: const BoxConstraints(minHeight: 56), // Fixed: Using constraints instead of min-height
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.grey[100],
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: controller.selectedClasses.isEmpty 
-                ? Colors.transparent 
-                : const Color(0xFF6C1FB4),
-            width: controller.selectedClasses.isEmpty ? 0 : 1,
-          ),
         ),
         child: Row(
           children: [
@@ -234,7 +229,9 @@ class TambahDetailView extends GetView<TambahDetailController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    controller.selectedClassesText,
+                    controller.selectedClasses.isEmpty 
+                        ? 'Pilih kelas' 
+                        : '${controller.selectedClasses.length} kelas dipilih',
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       color: controller.selectedClasses.isEmpty 
@@ -243,7 +240,7 @@ class TambahDetailView extends GetView<TambahDetailController> {
                     ),
                   ),
                   if (controller.selectedClasses.isNotEmpty) ...[
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 8),
                     _buildSelectedClassesTags(),
                   ],
                 ],
@@ -259,12 +256,193 @@ class TambahDetailView extends GetView<TambahDetailController> {
     ));
   }
 
-  // NEW: Display selected classes as tags
+  // Show bottom sheet with class selection
+  void _showClassSelectionBottomSheet() {
+    Get.bottomSheet(
+      Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Header
+            Container(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Pilih Kelas',
+                    style: GoogleFonts.poppins(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      controller.clearSelectedClasses();
+                      Get.back();
+                    },
+                    child: Text(
+                      'Reset',
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            
+            // Class options with scrollable container
+            Container(
+              constraints: const BoxConstraints(maxHeight: 400),
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: _buildClassSelectionOptions(),
+                ),
+              ),
+            ),
+            
+            // Action buttons
+            Container(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () => Get.back(),
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Color(0xFF6C1FB4)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                      child: Text(
+                        'Batal',
+                        style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: const Color(0xFF6C1FB4),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => Get.back(),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF6C1FB4),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        elevation: 0,
+                      ),
+                      child: Text(
+                        'Selesai',
+                        style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      isScrollControlled: true,
+    );
+  }
+
+  // Build class selection options grouped by grade
+  List<Widget> _buildClassSelectionOptions() {
+    final Map<String, List<String>> groupedClasses = controller.groupedClasses;
+    
+    List<Widget> widgets = [];
+    
+    groupedClasses.forEach((grade, classes) {
+      // Grade header with select all option
+      widgets.add(
+        Padding(
+          padding: const EdgeInsets.only(top: 16, bottom: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                grade,
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black87,
+                ),
+              ),
+              Obx(() {
+                bool allSelected = controller.isGradeFullySelected(classes);
+                return GestureDetector(
+                  onTap: () {
+                    controller.toggleGradeSelection(classes);
+                  },
+                  child: Text(
+                    allSelected ? 'Batalkan Semua' : 'Pilih Semua',
+                    style: GoogleFonts.poppins(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xFF6C1FB4),
+                    ),
+                  ),
+                );
+              }),
+            ],
+          ),
+        ),
+      );
+      
+      // Class checkboxes
+      for (String className in classes) {
+        widgets.add(
+          Obx(() => CheckboxListTile(
+            title: Text(
+              className,
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            value: controller.selectedClasses.contains(className),
+            onChanged: (bool? value) {
+              controller.toggleClassSelection(className);
+            },
+            activeColor: const Color(0xFF6C1FB4),
+            contentPadding: EdgeInsets.zero,
+            controlAffinity: ListTileControlAffinity.leading,
+          )),
+        );
+      }
+    });
+    
+    return widgets;
+  }
+
+  // Display selected classes as tags
   Widget _buildSelectedClassesTags() {
     return Wrap(
       spacing: 6,
       runSpacing: 4,
-      children: controller.selectedClasses.map((kelas) => Container(
+      children: controller.selectedClasses.take(6).map((kelas) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
           color: const Color(0xFF6C1FB4).withOpacity(0.1),
@@ -282,7 +460,24 @@ class TambahDetailView extends GetView<TambahDetailController> {
             color: const Color(0xFF6C1FB4),
           ),
         ),
-      )).toList(),
+      )).toList()
+        ..addAll(controller.selectedClasses.length > 6 
+            ? [Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Colors.grey.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  '+${controller.selectedClasses.length - 6}',
+                  style: GoogleFonts.poppins(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey[600],
+                  ),
+                ),
+              )]
+            : []),
     );
   }
 
@@ -361,6 +556,14 @@ class TambahDetailView extends GetView<TambahDetailController> {
       case 'powerpoint':
         typeIcon = Icons.slideshow;
         typeColor = Colors.orange;
+        break;
+      case 'audio':
+        typeIcon = Icons.audiotrack;
+        typeColor = Colors.purple;
+        break;
+      case 'image':
+        typeIcon = Icons.image;
+        typeColor = Colors.green;
         break;
       default:
         typeIcon = Icons.description;

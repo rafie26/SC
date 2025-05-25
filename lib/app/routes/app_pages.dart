@@ -10,6 +10,8 @@ import '../modules/detail_materi/bindings/detail_materi_binding.dart';
 import '../modules/detail_materi/views/detail_materi_view.dart';
 import '../modules/forgot_password/bindings/forgot_password_binding.dart';
 import '../modules/forgot_password/views/forgot_password_view.dart';
+import '../modules/grub/bindings/grub_binding.dart';
+import '../modules/grub/views/grub_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/home_guru/bindings/home_guru_binding.dart';
@@ -175,6 +177,11 @@ class AppPages {
       name: Routes.TAMBAH_KALENDER,
       page: () => const TambahKalenderView(),
       binding: TambahKalenderBinding(),
+    ),
+    GetPage(
+      name: Routes.GRUB,
+      page: () => const GrubView(),
+      binding: GrubBinding(),
     ),
   ];
 }

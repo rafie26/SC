@@ -34,15 +34,10 @@ class TambahTugasController extends GetxController {
   ];
   
   final List<String> kelasList = [
-    'VII A',
-    'VII B',
-    'VII C',
-    'VIII A',
-    'VIII B',
-    'VIII C',
-    'IX A',
-    'IX B',
-    'IX C'
+    '8B',
+    '8D',
+    '9D'
+
   ];
   
   // Simulasi file types yang diizinkan
