@@ -62,7 +62,7 @@ class CeritaController extends GetxController {
   // Data simulasi untuk profil user
   final Map<String, Map<String, dynamic>> _userProfileData = {
     'Rafi Iqbal': {
-      'posts': 12,
+      'Online': 1,
       'totalLikes': 156,
       'friends': 23,
       'recentPosts': [
@@ -72,7 +72,7 @@ class CeritaController extends GetxController {
       ],
     },
     'Antok Simanjuntak': {
-      'posts': 8,
+      'Online': 2,
       'totalLikes': 89,
       'friends': 18,
       'recentPosts': [
@@ -82,7 +82,7 @@ class CeritaController extends GetxController {
       ],
     },
     'Ahmad Rizki': {
-      'posts': 15,
+      'Online': 1,
       'totalLikes': 234,
       'friends': 31,
       'recentPosts': [
@@ -92,7 +92,7 @@ class CeritaController extends GetxController {
       ],
     },
     'Arip Kopling': {
-      'posts': 6,
+      'Online': 3,
       'totalLikes': 67,
       'friends': 14,
       'recentPosts': [
@@ -216,6 +216,10 @@ class CeritaController extends GetxController {
     // Clear input
     _selectedImagePath = '';
     
+    // Tutup pop-up/dialog terlebih dahulu
+    Get.back();
+    
+    // Tampilkan snackbar sukses
     Get.snackbar(
       '✅ Berhasil',
       'Post berhasil dibuat!',
@@ -234,7 +238,7 @@ class CeritaController extends GetxController {
   // Get user stats untuk profile
   Map<String, dynamic> getUserStats(String userName) {
     return _userProfileData[userName] ?? {
-      'posts': 0,
+      'Online': 0,
       'totalLikes': 0,
       'friends': 0,
       'recentPosts': <String>[],

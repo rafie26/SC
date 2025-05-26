@@ -7,9 +7,14 @@ class NavbarView extends GetView<NavbarController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Obx(() => controller.pages[controller.selectedIndex.value]),
-      bottomNavigationBar: _buildBottomNavigationBar(context),
+    return WillPopScope(
+      onWillPop: () async {
+        return !controller.handleBackPress();
+      },
+      child: Scaffold(
+        body: Obx(() => controller.pages[controller.selectedIndex.value]),
+        bottomNavigationBar: _buildBottomNavigationBar(context),
+      ),
     );
   }
   

@@ -5,8 +5,14 @@ class TambahKelasController extends GetxController {
   // Text controller untuk nama kelas
   final TextEditingController namaKelasController = TextEditingController();
   
+  // Observable untuk nama kelas (untuk reactive form validation)
+  var namaKelas = ''.obs;
+  
   // Observable untuk tingkat kelas yang dipilih
   var selectedTingkatKelas = ''.obs;
+  
+  // Observable untuk mata pelajaran yang dipilih
+  var selectedMataPelajaran = ''.obs;
   
   // Loading state
   var isLoading = false.obs;
@@ -14,7 +20,10 @@ class TambahKelasController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Initialize any required data here
+    // Listen to text controller changes and update observable
+    namaKelasController.addListener(() {
+      namaKelas.value = namaKelasController.text;
+    });
   }
 
   @override
@@ -27,6 +36,11 @@ class TambahKelasController extends GetxController {
   // Method untuk set tingkat kelas
   void setTingkatKelas(String tingkatKelas) {
     selectedTingkatKelas.value = tingkatKelas;
+  }
+
+  // Method untuk set mata pelajaran
+  void setMataPelajaran(String mataPelajaran) {
+    selectedMataPelajaran.value = mataPelajaran;
   }
 
   // Method untuk validasi form
@@ -55,7 +69,26 @@ class TambahKelasController extends GetxController {
       return false;
     }
 
+    if (selectedMataPelajaran.value.isEmpty) {
+      Get.snackbar(
+        'Error',
+        'Pilih mata pelajaran terlebih dahulu',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 3),
+      );
+      return false;
+    }
+
     return true;
+  }
+
+  // Method untuk cek apakah form valid (now reactive)
+  bool get isFormValid {
+    return namaKelas.value.trim().isNotEmpty &&
+           selectedTingkatKelas.value.isNotEmpty &&
+           selectedMataPelajaran.value.isNotEmpty;
   }
 
   // Method untuk membuat kelas baru
@@ -116,6 +149,7 @@ class TambahKelasController extends GetxController {
     final kelasData = {
       'nama_kelas': namaKelasController.text.trim(),
       'tingkat_kelas': selectedTingkatKelas.value,
+      'mata_pelajaran': selectedMataPelajaran.value,
       'created_at': DateTime.now().toIso8601String(),
     };
     
@@ -128,12 +162,15 @@ class TambahKelasController extends GetxController {
     print('Kelas Data:');
     print('Nama Kelas: ${namaKelasController.text.trim()}');
     print('Tingkat Kelas: ${selectedTingkatKelas.value}');
+    print('Mata Pelajaran: ${selectedMataPelajaran.value}');
   }
 
   // Method untuk membersihkan form
   void _clearForm() {
     namaKelasController.clear();
+    namaKelas.value = '';
     selectedTingkatKelas.value = '';
+    selectedMataPelajaran.value = '';
   }
 
   // Method untuk reset form (bisa dipanggil dari luar jika perlu)

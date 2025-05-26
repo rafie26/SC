@@ -71,7 +71,7 @@ class HomeGuruView extends GetView<HomeGuruController> {
                           physics: const NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.zero,
                           children: [
-                            // Modified Class item with complete container
+                            // Existing Class
                             NavigableClassItem(
                               iconAsset: 'assets/icons/bumi.png',
                               className: 'Matematika 9B',
@@ -80,7 +80,24 @@ class HomeGuruView extends GetView<HomeGuruController> {
                                 Get.toNamed('/kelas');
                               },
                             ),
-                            // Add more class items as needed
+                            // New Class - Matematika 9C
+                            NavigableClassItem(
+                              iconAsset: 'assets/icons/pencil.png', // Ganti dengan icon yang Anda pilih
+                              className: 'Matematika 9C',
+                              onTap: () {
+                                // Navigate to Kelas page for 9C
+                                Get.toNamed('', arguments: {'class': '9C'});
+                              },
+                            ),
+                            // New Class - Matematika 9D
+                            NavigableClassItem(
+                              iconAsset: 'assets/icons/book.png', // Ganti dengan icon yang Anda pilih
+                              className: 'Matematika 9D',
+                              onTap: () {
+                                // Navigate to Kelas page for 9D
+                                Get.toNamed('', arguments: {'class': '9D'});
+                              },
+                            ),
                           ],
                         ),
                       ),
@@ -143,16 +160,12 @@ class HomeGuruView extends GetView<HomeGuruController> {
                                 ),
                               ),
                               
-                              // Menu Items
+                               // Menu Items
+                                // Menu Items
                               MenuItemWidget(
-                                icon: Icons.assignment,
-                                title: 'Tugas',
-                                onTap: controller.navigateToTugas,
-                              ),
-                              MenuItemWidget(
-                                icon: Icons.book,
-                                title: 'Materi',
-                                onTap: controller.navigateToMateri,
+                                icon: Icons.star_rate,
+                                title: 'Nilai',
+                                onTap: controller.navigateToNilai,
                               ),
                               MenuItemWidget(
                                 icon: Icons.calendar_today,
@@ -482,19 +495,48 @@ class CustomAppBar extends StatelessWidget {
               child: _buildProfilePic(controller),
             ),
             const SizedBox(width: 15),
-            // Comments icon - NOW WITH NAVIGATION TO CHAT
+            // Comments icon with notification badge - NOW WITH NAVIGATION TO CHAT
             GestureDetector(
               onTap: () {
                 Get.toNamed('/chat');
               },
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                child: Image.asset(
-                  'assets/icons/vaadin_comments.png',
-                  width: 30,
-                  height: 30,
-                  fit: BoxFit.contain,
-                ),
+              child: Stack(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    child: Image.asset(
+                      'assets/icons/vaadin_comments.png',
+                      width: 30,
+                      height: 30,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  // Notification badge
+                  Positioned(
+                    right: 4,
+                    top: 4,
+                    child: Container(
+                      padding: const EdgeInsets.all(2),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      constraints: const BoxConstraints(
+                        minWidth: 16,
+                        minHeight: 16,
+                      ),
+                      child: const Text(
+                        '2', 
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             const Spacer(),

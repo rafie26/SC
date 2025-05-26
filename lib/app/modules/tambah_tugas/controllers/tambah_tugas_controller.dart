@@ -10,35 +10,12 @@ class TambahTugasController extends GetxController {
   final deskripsiController = TextEditingController();
   
   // Observable variables
-  final selectedSubject = ''.obs;
-  final selectedKelas = ''.obs;
   final selectedDeadline = Rx<DateTime?>(null);
   final isLoading = false.obs;
   
   // File attachment variables
   final attachedFiles = <Map<String, dynamic>>[].obs;
   final isUploadingFile = false.obs;
-  
-  // Data lists (simulasi data)
-  final List<String> subjectList = [
-    'Matematika',
-    'Bahasa Indonesia',
-    'Bahasa Inggris',
-    'IPA',
-    'IPS',
-    'Seni Budaya',
-    'Pendidikan Jasmani',
-    'PKN',
-    'Agama',
-    'TIK'
-  ];
-  
-  final List<String> kelasList = [
-    '8B',
-    '8D',
-    '9D'
-
-  ];
   
   // Simulasi file types yang diizinkan
   final List<String> allowedFileTypes = [
@@ -92,18 +69,6 @@ class TambahTugasController extends GetxController {
     judulController.dispose();
     deskripsiController.dispose();
     super.onClose();
-  }
-  
-  // Method untuk set mata pelajaran yang dipilih
-  void setSelectedSubject(String subject) {
-    selectedSubject.value = subject;
-    debugPrint('Selected subject: $subject');
-  }
-  
-  // Method untuk set kelas yang dipilih
-  void setSelectedKelas(String kelas) {
-    selectedKelas.value = kelas;
-    debugPrint('Selected kelas: $kelas');
   }
   
   // Method untuk memilih tanggal deadline
@@ -231,30 +196,6 @@ class TambahTugasController extends GetxController {
       return false;
     }
     
-    if (selectedSubject.value.isEmpty) {
-      Get.snackbar(
-        'Error',
-        'Mata pelajaran harus dipilih',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red[100],
-        colorText: Colors.red[800],
-        icon: const Icon(Icons.error, color: Colors.red),
-      );
-      return false;
-    }
-    
-    if (selectedKelas.value.isEmpty) {
-      Get.snackbar(
-        'Error',
-        'Kelas harus dipilih',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red[100],
-        colorText: Colors.red[800],
-        icon: const Icon(Icons.error, color: Colors.red),
-      );
-      return false;
-    }
-    
     if (selectedDeadline.value == null) {
       Get.snackbar(
         'Error',
@@ -285,8 +226,6 @@ class TambahTugasController extends GetxController {
       // Simulasi data yang akan dikirim
       Map<String, dynamic> tugasData = {
         'judul': judulController.text.trim(),
-        'mataPelajaran': selectedSubject.value,
-        'kelas': selectedKelas.value,
         'deskripsi': deskripsiController.text.trim(),
         'deadline': selectedDeadline.value?.toIso8601String(),
         'attachedFiles': attachedFiles.map((file) => {
@@ -338,8 +277,6 @@ class TambahTugasController extends GetxController {
   void _resetForm() {
     judulController.clear();
     deskripsiController.clear();
-    selectedSubject.value = '';
-    selectedKelas.value = '';
     selectedDeadline.value = null;
     attachedFiles.clear();
     formKey.currentState?.reset();
@@ -363,5 +300,4 @@ class TambahTugasController extends GetxController {
     final totalFiles = attachedFiles.length;
     return '${(totalFiles * 2.5).toStringAsFixed(1)} MB'; // Simulasi rata-rata 2.5MB per file
   }
-
 }

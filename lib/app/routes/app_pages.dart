@@ -26,6 +26,8 @@ import '../modules/materi/bindings/materi_binding.dart';
 import '../modules/materi/views/materi_view.dart';
 import '../modules/navbar/bindings/navbar_binding.dart';
 import '../modules/navbar/views/navbar_view.dart';
+import '../modules/nilai/bindings/nilai_binding.dart';
+import '../modules/nilai/views/nilai_view.dart';
 import '../modules/notifikasi/bindings/notifikasi_binding.dart';
 import '../modules/notifikasi/views/notifikasi_view.dart';
 import '../modules/obrolan/bindings/obrolan_binding.dart';
@@ -182,6 +184,11 @@ class AppPages {
       name: Routes.GRUB,
       page: () => const GrubView(),
       binding: GrubBinding(),
+    ),
+    GetPage(
+      name: Routes.NILAI,
+      page: () => const NilaiView(),
+      binding: NilaiBinding(),
     ),
   ];
 }

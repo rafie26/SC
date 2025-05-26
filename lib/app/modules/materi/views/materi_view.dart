@@ -34,15 +34,10 @@ class MateriView extends GetView<MateriController> {
       ),
       body: Column(
         children: [
-          // Search bar
+          // Search bar - fixed at top
           _buildSearchBar(),
           
-          // Subject filter chips
-          _buildSubjectFilterChips(),
-          
-          const SizedBox(height: 16),
-          
-          // Materi list
+          // Materi list - expands to fill remaining space
           Expanded(
             child: Obx(() {
               if (controller.isLoading.value) {
@@ -62,7 +57,8 @@ class MateriView extends GetView<MateriController> {
                   controller.refreshData();
                 },
                 child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  // Remove top padding to make it closer to search bar
+                  padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
                   itemCount: controller.filteredMateriList.length,
                   itemBuilder: (context, index) {
                     final materi = controller.filteredMateriList[index];
@@ -91,7 +87,7 @@ class MateriView extends GetView<MateriController> {
 
   Widget _buildSearchBar() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8), // Add small bottom padding
       child: TextField(
         onChanged: controller.setSearchQuery,
         decoration: InputDecoration(
@@ -113,25 +109,7 @@ class MateriView extends GetView<MateriController> {
     );
   }
 
-  Widget _buildSubjectFilterChips() {
-    return Container(
-      height: 50,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Obx(() => ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemCount: controller.subjectList.length,
-        separatorBuilder: (context, index) => const SizedBox(width: 8),
-        itemBuilder: (context, index) {
-          final subject = controller.subjectList[index];
-          return SubjectChip(
-            title: subject,
-            isSelected: controller.selectedSubject.value == subject,
-            onTap: () => controller.setSelectedSubject(subject),
-          );
-        },
-      )),
-    );
-  }
+
 
   Widget _buildEmptyState() {
     return Center(

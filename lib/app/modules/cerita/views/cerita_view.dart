@@ -665,7 +665,7 @@ GetBuilder<CeritaController>(
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _buildStatItem('Posts', '${userStats['posts']}'),
+                _buildStatItem('Online', '${userStats['Online']}'),
                 Container(
                   height: 30,
                   width: 1,

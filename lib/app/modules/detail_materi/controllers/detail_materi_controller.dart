@@ -31,7 +31,7 @@ class DetailMateriController extends GetxController {
       // Contoh data dummy - ganti dengan data actual
       materi.value = MateriModel(
         id: materiId!,
-        title: 'Contoh Materi',
+        title: 'Pengenalan Integral',
         description: 'Ini adalah contoh deskripsi materi yang akan ditampilkan di halaman detail.',
         subject: 'Matematika',
         kelas: 'Kelas 10',

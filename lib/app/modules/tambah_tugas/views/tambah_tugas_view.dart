@@ -68,34 +68,6 @@ class TambahTugasView extends GetView<TambahTugasController> {
                       
                       const SizedBox(height: 20),
                       
-                      // Mata Pelajaran
-                      _buildSectionTitle('Mata Pelajaran'),
-                      const SizedBox(height: 8),
-                      Obx(() => _buildDropdownField(
-                        value: controller.selectedSubject.value.isEmpty 
-                            ? null 
-                            : controller.selectedSubject.value,
-                        items: controller.subjectList,
-                        hintText: 'Pilih mata pelajaran',
-                        onChanged: (value) => controller.setSelectedSubject(value!),
-                      )),
-                      
-                      const SizedBox(height: 20),
-                      
-                      // Kelas
-                      _buildSectionTitle('Kelas'),
-                      const SizedBox(height: 8),
-                      Obx(() => _buildDropdownField(
-                        value: controller.selectedKelas.value.isEmpty 
-                            ? null 
-                            : controller.selectedKelas.value,
-                        items: controller.kelasList,
-                        hintText: 'Pilih kelas',
-                        onChanged: (value) => controller.setSelectedKelas(value!),
-                      )),
-                      
-                      const SizedBox(height: 20),
-                      
                       // Deskripsi
                       _buildSectionTitle('Deskripsi Tugas'),
                       const SizedBox(height: 8),
@@ -230,62 +202,6 @@ class TambahTugasView extends GetView<TambahTugasController> {
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: Colors.red, width: 2),
-        ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      ),
-    );
-  }
-
-  Widget _buildDropdownField({
-    required String? value,
-    required List<String> items,
-    required String hintText,
-    required void Function(String?) onChanged,
-  }) {
-    return DropdownButtonFormField<String>(
-      value: value,
-      items: items.map((String item) {
-        return DropdownMenuItem<String>(
-          value: item,
-          child: Text(
-            item,
-            style: GoogleFonts.poppins(
-              fontSize: 14,
-              color: Colors.black87,
-            ),
-          ),
-        );
-      }).toList(),
-      onChanged: onChanged,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Field tidak boleh kosong';
-        }
-        return null;
-      },
-      style: GoogleFonts.poppins(
-        fontSize: 14,
-        color: Colors.black87,
-      ),
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: GoogleFonts.poppins(
-          fontSize: 14,
-          color: Colors.grey[500],
-        ),
-        filled: true,
-        fillColor: Colors.grey[50],
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey[300]!),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey[300]!),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF6C1FB4), width: 2),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),

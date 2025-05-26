@@ -132,10 +132,11 @@ class ProfilView extends GetView<ProfilController> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Obx(() => StatisticItem(
-                        icon: Icons.article_outlined,
-                        count: controller.profileData['postsCount'] ?? 0,
-                        label: 'Post',
-                        color: const Color(0xFF6C1FB4),
+                        icon: Icons.access_time,
+                        count: controller.profileData['onlineHours'] ?? 0,
+                        label: 'Online',
+                        color: Colors.blue[400]!,
+                        isTime: true, // Special flag for time formatting
                       )),
                       Container(
                         width: 1,
@@ -283,12 +284,13 @@ class ProfilView extends GetView<ProfilController> {
   }
 }
 
-// Statistic Item Widget
+// Updated Statistic Item Widget with time formatting
 class StatisticItem extends StatelessWidget {
   final IconData icon;
   final int count;
   final String label;
   final Color color;
+  final bool isTime;
 
   const StatisticItem({
     Key? key,
@@ -296,6 +298,7 @@ class StatisticItem extends StatelessWidget {
     required this.count,
     required this.label,
     required this.color,
+    this.isTime = false,
   }) : super(key: key);
 
   @override
@@ -317,7 +320,7 @@ class StatisticItem extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          count.toString(),
+          isTime ? '${count}h' : count.toString(),
           style: GoogleFonts.poppins(
             fontSize: 20,
             fontWeight: FontWeight.w700,

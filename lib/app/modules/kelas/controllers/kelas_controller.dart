@@ -97,6 +97,29 @@ class KelasController extends GetxController {
                 showClassCode();
               },
             ),
+            
+            // Tugas menu item
+            ListTile(
+              leading: const Icon(Icons.assignment, color: Colors.orange),
+              title: const Text('Tugas'),
+              subtitle: const Text('Kelola tugas kelas'),
+              onTap: () {
+                Get.back();
+                Get.toNamed('/tugas');
+              },
+            ),
+            
+            // Materi menu item
+            ListTile(
+              leading: const Icon(Icons.book, color: Colors.green),
+              title: const Text('Materi'),
+              subtitle: const Text('Kelola materi pembelajaran'),
+              onTap: () {
+                Get.back();
+                Get.toNamed('/materi');
+              },
+            ),
+            
             ListTile(
               leading: const Icon(Icons.people_alt),
               title: const Text('Kelola Siswa'),

@@ -9,7 +9,7 @@ class NavbarController extends GetxController {
   final List<String> routes = [
     '/kelas',
     '/cerita',
-    '/tambah', // Updated to have a route
+    '/tambah',
     '/obrolan',
     '/notifikasi',
   ];
@@ -23,6 +23,13 @@ class NavbarController extends GetxController {
     const Center(child: Text('Notifikasi', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF8A2BE2)))),
   ];
 
+  @override
+  void onInit() {
+    super.onInit();
+    // Update selected index when controller initializes
+    updateSelectedIndexFromRoute();
+  }
+
   void changeIndex(int index) {
     // Add animation flag
     if (isAnimating.value || selectedIndex.value == index) return;
@@ -30,15 +37,58 @@ class NavbarController extends GetxController {
     isAnimating.value = true;
     selectedIndex.value = index;
     
-    // Navigate to the appropriate route
+    // Navigate using offAllNamed to replace current route and clear stack
+    // This prevents navigation stack issues
     String route = routes[index];
     if (route.isNotEmpty) {
-      Get.toNamed(route);
+      Get.offAllNamed(route);
     }
     
     // Reset animation flag after delay
     Future.delayed(const Duration(milliseconds: 300), () {
       isAnimating.value = false;
     });
+  }
+
+  // Simplified method without navigation stack issues
+  void changeIndexSimple(int index) {
+    if (selectedIndex.value == index) return;
+    selectedIndex.value = index;
+  }
+
+  // Alternative method: Use offNamed for single route replacement
+  void changeIndexWithReplace(int index) {
+    if (isAnimating.value || selectedIndex.value == index) return;
+    
+    isAnimating.value = true;
+    selectedIndex.value = index;
+    
+    String route = routes[index];
+    if (route.isNotEmpty) {
+      Get.offNamed(route);
+    }
+    
+    Future.delayed(const Duration(milliseconds: 300), () {
+      isAnimating.value = false;
+    });
+  }
+
+  // Method to update selected index based on current route
+  void updateSelectedIndexFromRoute() {
+    String currentRoute = Get.currentRoute;
+    int index = routes.indexOf(currentRoute);
+    if (index != -1 && index != selectedIndex.value) {
+      selectedIndex.value = index;
+    }
+  }
+
+  // Method to handle back button specifically
+  bool handleBackPress() {
+    // If we're not on the first tab, go to first tab
+    if (selectedIndex.value != 0) {
+      changeIndex(0);
+      return true; // Prevent default back behavior
+    }
+    return false; // Allow default back behavior (exit app)
   }
 }

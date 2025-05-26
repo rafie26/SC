@@ -13,7 +13,6 @@ class MateriController extends GetxController {
   void onInit() {
     super.onInit();
     loadMateriData();
-    loadSubjectList();
     
     // Listen to search and filter changes
     ever(searchQuery, (_) => filterMateri());
@@ -29,7 +28,7 @@ class MateriController extends GetxController {
         id: '1',
         title: 'Pengenalan Integral',
         subject: 'Matematika',
-        kelas: 'X RPL B',
+        kelas: '9B',
         description: 'Materi dasar tentang konsep integral dan aplikasinya dalam matematika',
         type: 'PDF',
         uploadDate: '20 Mei 2025',
@@ -38,10 +37,10 @@ class MateriController extends GetxController {
       ),
       MateriModel(
         id: '2',
-        title: 'Video Tutorial Database',
-        subject: 'Basis Data',
-        kelas: 'X RPL A, X RPL B',
-        description: 'Tutorial lengkap membuat database dengan MySQL',
+        title: 'Video Menghitung Cepat',
+        subject: 'Matematika',
+        kelas: '9B',
+        description: 'Tutorial lengkap menghitung cepat',
         type: 'Video',
         uploadDate: '18 Mei 2025',
         fileSize: '45.2 MB',
@@ -49,10 +48,10 @@ class MateriController extends GetxController {
       ),
       MateriModel(
         id: '3',
-        title: 'Struktur Teks Eksposisi',
-        subject: 'Bahasa Indonesia',
-        kelas: 'X RPL A',
-        description: 'Memahami struktur dan ciri-ciri teks eksposisi',
+        title: 'Bilangan Berpangkat',
+        subject: 'Matematika',
+        kelas: '9B',
+        description: 'Memahami Apasih Bilangan berpangkat',
         type: 'PowerPoint',
         uploadDate: '15 Mei 2025',
         fileSize: '5.8 MB',
@@ -60,10 +59,10 @@ class MateriController extends GetxController {
       ),
       MateriModel(
         id: '4',
-        title: 'Algoritma Sorting',
-        subject: 'Pemrograman',
-        kelas: 'X RPL B',
-        description: 'Penjelasan berbagai algoritma sorting: bubble sort, selection sort, insertion sort',
+        title: 'Algoritma',
+        subject: 'Matematika',
+        kelas: '9B',
+        description: 'Algoritma dalam matematika',
         type: 'PDF',
         uploadDate: '12 Mei 2025',
         fileSize: '3.1 MB',
@@ -75,15 +74,7 @@ class MateriController extends GetxController {
     isLoading.value = false;
   }
 
-  void loadSubjectList() {
-    subjectList.value = [
-      'Semua',
-      'Matematika',
-      'Bahasa Indonesia',
-      'Basis Data',
-      'Pemrograman',
-    ];
-  }
+ 
 
   void setSearchQuery(String query) {
     searchQuery.value = query;

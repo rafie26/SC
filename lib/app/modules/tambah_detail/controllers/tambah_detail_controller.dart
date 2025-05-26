@@ -21,99 +21,17 @@ class TambahDetailController extends GetxController {
   final descriptionController = TextEditingController();
   
   // Observable variables
-  var selectedSubject = 'Pilih Mata Pelajaran'.obs;
-  var selectedClasses = <String>[].obs; // List for multiple class selection
   var selectedFile = Rxn<SimulatedFile>();
   var isLoading = false.obs;
   
   // Form key for validation
   final formKey = GlobalKey<FormState>();
-  
-  // Lists for dropdowns
-  final subjectList = [
-    'Pilih Mata Pelajaran',
-    'Matematika',
-    'Bahasa Indonesia',
-    'Bahasa Inggris',
-    'IPA',
-    'IPS',
-    'PKN',
-    'Seni Budaya',
-    'Penjas',
-    'Agama',
-  ].obs;
-  
-  // Updated class list to match the view's detailed classes
-  final classList = [
-    '7A', '7B', '7C', '7D',
-    '8A', '8B', '8C', '8D',
-    '9A', '9B', '9C', '9D',
-  ].obs;
 
   @override
   void onClose() {
     titleController.dispose();
     descriptionController.dispose();
     super.onClose();
-  }
-
-  // Set selected subject
-  void setSelectedSubject(String subject) {
-    selectedSubject.value = subject;
-  }
-
-  // Toggle class selection (for multiple selection)
-  void toggleClassSelection(String kelas) {
-    if (selectedClasses.contains(kelas)) {
-      selectedClasses.remove(kelas);
-    } else {
-      selectedClasses.add(kelas);
-    }
-  }
-
-  // Check if a class is selected
-  bool isClassSelected(String kelas) {
-    return selectedClasses.contains(kelas);
-  }
-
-  // Add multiple classes to selection
-  void addClassesToSelection(List<String> classes) {
-    for (String kelas in classes) {
-      if (!selectedClasses.contains(kelas)) {
-        selectedClasses.add(kelas);
-      }
-    }
-  }
-
-  // Remove multiple classes from selection
-  void removeClassesFromSelection(List<String> classes) {
-    for (String kelas in classes) {
-      selectedClasses.remove(kelas);
-    }
-  }
-
-  // Get selected classes as formatted string
-  String get selectedClassesText {
-    if (selectedClasses.isEmpty) {
-      return 'Pilih Kelas';
-    } else if (selectedClasses.length == 1) {
-      return selectedClasses.first;
-    } else if (selectedClasses.length <= 2) {
-      return selectedClasses.join(', ');
-    } else {
-      return '${selectedClasses.take(2).join(', ')} +${selectedClasses.length - 2} lainnya';
-    }
-  }
-
-  // Clear all selected classes
-  void clearSelectedClasses() {
-    selectedClasses.clear();
-  }
-
-  // Select all classes
-  void selectAllClasses() {
-    selectedClasses.clear();
-    selectedClasses.addAll(classList);
   }
 
   // Pick file (simulasi)
@@ -213,28 +131,6 @@ class TambahDetailController extends GetxController {
       return false;
     }
     
-    if (selectedSubject.value == 'Pilih Mata Pelajaran') {
-      Get.snackbar(
-        'Validasi Error',
-        'Pilih mata pelajaran terlebih dahulu',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
-      return false;
-    }
-    
-    if (selectedClasses.isEmpty) {
-      Get.snackbar(
-        'Validasi Error',
-        'Pilih minimal satu kelas',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
-      return false;
-    }
-    
     if (selectedFile.value == null) {
       Get.snackbar(
         'Validasi Error',
@@ -259,35 +155,26 @@ class TambahDetailController extends GetxController {
       // Simulate API call delay
       await Future.delayed(const Duration(seconds: 2));
       
-      // Create new materi model for each selected class
-      final materiList = <MateriModel>[];
-      
-      for (String kelas in selectedClasses) {
-        final newMateri = MateriModel(
-          id: '${DateTime.now().millisecondsSinceEpoch}_${kelas.replaceAll(' ', '_')}',
-          title: titleController.text,
-          description: descriptionController.text,
-          subject: selectedSubject.value,
-          kelas: kelas,
-          type: getFileType(selectedFile.value!.name),
-          fileName: selectedFile.value!.name,
-          fileSize: formatFileSize(selectedFile.value!.size),
-          uploadDate: _formatDate(DateTime.now()),
-          views: 0,
-        );
-        materiList.add(newMateri);
-      }
+      // Create new materi model
+      final newMateri = MateriModel(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        title: titleController.text,
+        description: descriptionController.text,
+        subject: 'General', // Default subject since form is removed
+        kelas: 'All', // Default class since form is removed
+        type: getFileType(selectedFile.value!.name),
+        fileName: selectedFile.value!.name,
+        fileSize: formatFileSize(selectedFile.value!.size),
+        uploadDate: _formatDate(DateTime.now()),
+        views: 0,
+      );
       
       // Here you would typically save to your backend/database
       // For now, we'll just show success message
       
-      String successMessage = selectedClasses.length == 1 
-          ? 'Materi berhasil ditambahkan untuk kelas ${selectedClasses.first}'
-          : 'Materi berhasil ditambahkan untuk ${selectedClasses.length} kelas';
-      
       Get.snackbar(
         'Berhasil',
-        successMessage,
+        'Materi berhasil ditambahkan',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.green,
         colorText: Colors.white,
@@ -297,8 +184,8 @@ class TambahDetailController extends GetxController {
       // Clear form after successful save
       clearForm();
       
-      // Navigate back and return the list of created materials
-      Get.back(result: materiList);
+      // Navigate back and return the created material
+      Get.back(result: newMateri);
       
     } catch (e) {
       Get.snackbar(
@@ -322,101 +209,6 @@ class TambahDetailController extends GetxController {
   void clearForm() {
     titleController.clear();
     descriptionController.clear();
-    selectedSubject.value = 'Pilih Mata Pelajaran';
-    selectedClasses.clear();
     selectedFile.value = null;
-  }
-
-  // Get grouped classes for display (used in view)
-  Map<String, List<String>> get groupedClasses {
-    return {
-      'Kelas 8': ['8B', '8D',],
-      'Kelas 9': ['9D',],
-    };
-  }
-
-  // Check if all classes in a grade are selected
-  bool isGradeFullySelected(List<String> gradeClasses) {
-    return gradeClasses.every((c) => selectedClasses.contains(c));
-  }
-
-  // Toggle selection for entire grade
-  void toggleGradeSelection(List<String> gradeClasses) {
-    if (isGradeFullySelected(gradeClasses)) {
-      removeClassesFromSelection(gradeClasses);
-    } else {
-      addClassesToSelection(gradeClasses);
-    }
-  }
-
-  // Get display text for selected classes count
-  String get selectedClassesDisplayText {
-    if (selectedClasses.isEmpty) {
-      return 'Pilih kelas';
-    }
-    return '${selectedClasses.length} kelas dipilih';
-  }
-
-  // Show class selection dialog (legacy method - kept for compatibility)
-  void showClassSelectionDialog() {
-    Get.dialog(
-      AlertDialog(
-        title: const Text('Pilih Kelas'),
-        content: SizedBox(
-          width: double.maxFinite,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Select All / Clear All buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  TextButton(
-                    onPressed: selectAllClasses,
-                    child: const Text('Pilih Semua'),
-                  ),
-                  TextButton(
-                    onPressed: clearSelectedClasses,
-                    child: const Text('Hapus Semua'),
-                  ),
-                ],
-              ),
-              const Divider(),
-              // Class list with checkboxes
-              ...classList.map((kelas) => Obx(() => CheckboxListTile(
-                title: Text(kelas),
-                value: isClassSelected(kelas),
-                onChanged: (bool? value) {
-                  toggleClassSelection(kelas);
-                },
-                controlAffinity: ListTileControlAffinity.leading,
-              ))).toList(),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Get.back(),
-            child: const Text('Batal'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Get.back();
-              if (selectedClasses.isNotEmpty) {
-                Get.snackbar(
-                  'Kelas Dipilih',
-                  '${selectedClasses.length} kelas telah dipilih',
-                  snackPosition: SnackPosition.BOTTOM,
-                  backgroundColor: Colors.blue,
-                  colorText: Colors.white,
-                  duration: const Duration(seconds: 1),
-                );
-              }
-            },
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
   }
 }

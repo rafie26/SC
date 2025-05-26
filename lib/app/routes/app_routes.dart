@@ -27,6 +27,7 @@ abstract class Routes {
   static const TAMBAH_DETAIL = _Paths.TAMBAH_DETAIL;
   static const TAMBAH_KALENDER = _Paths.TAMBAH_KALENDER;
   static const GRUB = _Paths.GRUB;
+  static const NILAI = _Paths.NILAI;
 }
 
 abstract class _Paths {
@@ -56,4 +57,5 @@ abstract class _Paths {
   static const TAMBAH_DETAIL = '/tambah-detail';
   static const TAMBAH_KALENDER = '/tambah-kalender';
   static const GRUB = '/grub';
+  static const NILAI = '/nilai';
 }

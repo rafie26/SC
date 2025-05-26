@@ -16,34 +16,41 @@ class KelasView extends GetView<KelasController> {
     // Get the NavbarController
     final NavbarController navbarController = Get.find<NavbarController>();
     
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: _buildAppBar(),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Show management toolbar when in student management mode
-          Obx(() => controller.isManagingStudents.value 
-            ? _buildManagementToolbar() 
-            : const SizedBox.shrink()),
-          Expanded(
-            child: GridView.builder(
-              padding: const EdgeInsets.all(16.0),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 16.0,
-                mainAxisSpacing: 20.0,
-                childAspectRatio: 0.85, // Adjusted for better consistency
+    return WillPopScope(
+      onWillPop: () async {
+        // Reset navbar ke index 0 (Ruang Kelas) saat back button ditekan
+        navbarController.selectedIndex.value = 0;
+        return true; // Allow back navigation
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: _buildAppBar(),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Show management toolbar when in student management mode
+            Obx(() => controller.isManagingStudents.value 
+              ? _buildManagementToolbar() 
+              : const SizedBox.shrink()),
+            Expanded(
+              child: GridView.builder(
+                padding: const EdgeInsets.all(16.0),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 16.0,
+                  mainAxisSpacing: 20.0,
+                  childAspectRatio: 0.85, // Adjusted for better consistency
+                ),
+                itemCount: 15,
+                itemBuilder: (context, index) {
+                  return _buildStudentCard(index);
+                },
               ),
-              itemCount: 15,
-              itemBuilder: (context, index) {
-                return _buildStudentCard(index);
-              },
             ),
-          ),
-        ],
+          ],
+        ),
+        bottomNavigationBar: _buildBottomNavigationBar(navbarController),
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(navbarController),
     );
   }
 
@@ -72,6 +79,9 @@ class KelasView extends GetView<KelasController> {
           if (controller.isManagingStudents.value) {
             controller.toggleStudentManagement();
           } else {
+            // Set navbar ke index 0 sebelum navigasi
+            final navbarController = Get.find<NavbarController>();
+            navbarController.selectedIndex.value = 0;
             Get.toNamed('/home-guru');
           }
         },
@@ -289,7 +299,7 @@ class KelasView extends GetView<KelasController> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildNavItem(controller, 0, 'Ruang Kelas', Icons.people, Colors.purple),
+            _buildNavItem(controller, 0, 'Ruang Kelas', Icons.people, Colors.black),
             _buildNavItem(controller, 1, 'Cerita', Icons.image, Colors.black),
             _buildAddButton(controller),
             _buildNavItem(controller, 3, 'Obrolan', Icons.chat_bubble_outline, Colors.black),

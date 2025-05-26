@@ -12,7 +12,7 @@ class ProfilController extends GetxController {
     'NI': '1140',
     'subject': 'Matematika',
     'classes': '8-9',
-    'postsCount': 12,
+    'onlineHours': 1, // Total online hours in a day (24h format)
     'likesCount': 156,
     'friendsCount': 26,
   }.obs;
@@ -236,16 +236,16 @@ class ProfilController extends GetxController {
     profileData.refresh(); // Trigger UI update
   }
 
-  void updateStatistics(int posts, int likes, int friends) {
-    profileData['postsCount'] = posts;
+  void updateStatistics(int onlineHours, int likes, int friends) {
+    profileData['onlineHours'] = onlineHours;
     profileData['likesCount'] = likes;
     profileData['friendsCount'] = friends;
     profileData.refresh();
   }
 
-  void incrementPostCount() {
-    int currentPosts = profileData['postsCount'] ?? 0;
-    updateProfileData('postsCount', currentPosts + 1);
+  void incrementOnlineHours() {
+    int currentHours = profileData['onlineHours'] ?? 0;
+    updateProfileData('onlineHours', currentHours + 1);
   }
 
   void incrementLikeCount() {
@@ -256,6 +256,19 @@ class ProfilController extends GetxController {
   void incrementFriendCount() {
     int currentFriends = profileData['friendsCount'] ?? 0;
     updateProfileData('friendsCount', currentFriends + 1);
+  }
+
+  // Method to format online hours for display
+  String getFormattedOnlineHours() {
+    int hours = profileData['onlineHours'] ?? 0;
+    return '${hours}h';
+  }
+
+  // Method to update online hours based on session tracking
+  void updateOnlineTime(Duration sessionDuration) {
+    int currentHours = profileData['onlineHours'] ?? 0;
+    int additionalHours = sessionDuration.inHours;
+    updateProfileData('onlineHours', currentHours + additionalHours);
   }
 
   void saveProfile() {

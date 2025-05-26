@@ -17,40 +17,47 @@ class ObrolanView extends GetView<ObrolanController> {
     // Get the NavbarController
     final NavbarController navbarController = Get.find<NavbarController>();
     
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            // Update navbar index to Ruang Kelas (0) before navigation
-            navbarController.changeIndex(0);
-            Get.toNamed('/home-guru');
-          },
+    return WillPopScope(
+      onWillPop: () async {
+        // Reset navbar ke index 0 (Ruang Kelas) saat back button ditekan
+        navbarController.selectedIndex.value = 0;
+        return true; // Allow back navigation
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () {
+              // Update navbar index to Ruang Kelas (0) before navigation
+              navbarController.selectedIndex.value = 0;
+              Get.toNamed('/home-guru');
+            },
+          ),
+          title: Text(
+            'Obrolan',
+            style: GoogleFonts.poppins(
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          centerTitle: true,
         ),
-        title: Text(
-          'Obrolan',
-          style: GoogleFonts.poppins(
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildBoardCast(),
+              const SizedBox(height: 20),
+              _buildChatSection(),
+            ],
           ),
         ),
-        centerTitle: true,
+        bottomNavigationBar: _buildBottomNavigationBar(navbarController),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildBoardCast(),
-            const SizedBox(height: 20),
-            _buildChatSection(),
-          ],
-        ),
-      ),
-      bottomNavigationBar: _buildBottomNavigationBar(navbarController),
     );
   }
 

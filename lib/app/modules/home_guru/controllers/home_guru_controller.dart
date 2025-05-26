@@ -105,16 +105,10 @@ class HomeGuruController extends GetxController {
   }
   
   // Menu action methods
-  void navigateToTugas() {
+  void navigateToNilai() {
     closeMenu();
-    Get.toNamed('/tugas');
+    Get.toNamed('/nilai');
   }
-  
-  void navigateToMateri() {
-    closeMenu();
-    Get.toNamed('/materi');
-  }
-
   
   void navigateToKalender() {
     closeMenu();
